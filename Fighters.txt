@@ -1,0 +1,5 @@
+Goku, Saiyan, 180, 70, Black, Orange, Goku.jpeg, folder1, 2, KameHame Wave, KiBlast
+Tien, Human, 160, 40, Yellow, Red, tien.jpeg, folder2, FMA
+Vegeta, Saiyan, 176, 65, Black, Blue, vegeta2.jpeg, folder3, 2, Galick Gun, Black Storm
+Krilin, Human, 140, 55, Skinhead, Red, krilin.jpeg, folder4, FMAB
+Miroljub Petrovic, Human, 182, 80, Grey, Black, Mire.jpeg, folder5, BalkanInfo
