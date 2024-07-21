@@ -18,7 +18,7 @@ import javax.swing.Timer;
 
 class Crtaj extends JPanel implements KeyListener, ActionListener{
 
-	Timer t=new Timer(25,this);
+	Timer t=new Timer(100,this);
 	Fighter f1,f2;
 	public Crtaj(Fighter f1, Fighter f2) {
 		t.start();
@@ -32,7 +32,21 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	}
 	int count=0;
 	int x=100,y=790,holdX=0,holdY=0;
-	int a=500,b=790;
+	int a=700,b=790,holdA=0,holdB=0;
+	
+	int myHelth=100;
+	int enemyHelth=100;
+	
+	boolean enemyMove=false;
+	boolean enemyAttack=false;
+	boolean enemyJump=false;
+	boolean retreatLeft=false;
+	boolean retreatRight=false;
+	boolean enemyChangeBase=false;
+	
+	
+	String enemyBaseAttacks[] = {"Punch.jpg", "MidKick.jpg","HeightKick.jpg"};
+	
 	int specX=0,specY=700,holdSpec;
 	boolean jump=false;
 	boolean fly=false;
@@ -60,6 +74,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		try {
 			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+"Base.jpg";
 			String s="";
+			
 	//		System.out.println(ss);
 	//		specX=x;specY=y;
 			if(!changeBase) {
@@ -97,6 +112,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(slide) {
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Slide.jpg";
 			}
+			
+			
+			
+			
 						
 			BufferedImage img=ImageIO.read(new File("background/background.jpeg"));
 			Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
@@ -119,11 +138,27 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		BufferedImage fighter2;
 		
 		try {
-			String ss=f2.getFile()+"/"+f2.getName().toLowerCase()+"Base.jpg";
-			fighter2=ImageIO.read(new File(ss));
-
+			String waff=f2.getFile()+"/"+f2.getName().toLowerCase()+"Base.jpg";
+			
+			System.out.println(waff);
+			if(!enemyChangeBase) {
+				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Base2.jpg";
+			}
+			int randomNum = (int)(Math.random() * 3);
+			
+			
+			if(enemyAttack) {
+				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[randomNum];
+			}
+			fighter2=ImageIO.read(new File(waff));
 			
 			g.drawImage(fighter2,a+100*side,b,200*side*-1,200,null);//Okreni sliku
+			
+			g.setColor(Color.RED);
+			g.drawString(String.valueOf(myHelth), 10, 20); // Gornji levi ugao
+			g.drawString(String.valueOf(enemyHelth), getWidth() - 30, 20); // Gornji desni ugao
+
+	 
 
 			//Mogao sam ovo lepse da iskucam
 		} catch (IOException e) {
@@ -239,6 +274,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		// TODO Auto-generated method stub
 		repaint();
 		x+=holdX;y-=holdY;
+		a+=holdA;
 		Timer time=new Timer(1000, this);
 		if(a<x+100) {
 			side=-1;
@@ -286,6 +322,42 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			specX=0;
 			faza2=false;
 		}
+		
+		
+		
+		/////////////AI Fighter 2
+		if(x<a && a>=x+210) {
+			holdA=-2;
+			enemyChangeBase=enemyChangeBase ? false:true;
+		}else if(x<a && a<=x+210){
+			retreatRight=true;
+		}else if(x>a && a<=x-210) {
+			holdA=2;
+			enemyChangeBase=enemyChangeBase ? false:true;
+		}else if(x>a && a>=x-210){
+			retreatLeft=true;}
+		
+		
+		
+		
+		if(x<a && retreatRight && a<800) {
+			holdA=5;
+			enemyChangeBase=enemyChangeBase ? false:true;
+		}else if(x<a && a>800)
+			retreatRight=false;
+		if(x>a && retreatLeft && a>100) {
+			holdA=-5;
+			enemyChangeBase=enemyChangeBase ? false:true;
+		}else if(a<100)
+			retreatLeft = false;
+		
+		enemyMove=true;
+		
+		if(x<a && a<=x+240) {
+			enemyAttack=enemyAttack ? false:true;
+		}
+		
+
 		
 	}
 	
