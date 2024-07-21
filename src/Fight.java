@@ -1,6 +1,7 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -155,8 +156,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			g.drawImage(fighter2,a+100*side,b,200*side*-1,200,null);//Okreni sliku
 			
 			g.setColor(Color.RED);
-			g.drawString(String.valueOf(myHelth), 10, 20); // Gornji levi ugao
-			g.drawString(String.valueOf(enemyHelth), getWidth() - 30, 20); // Gornji desni ugao
+		    Font font = new Font("Arial", Font.BOLD, 20);
+		    g.setFont(font);
+		    g.drawString(String.valueOf(myHelth), 10, 20); 
+		    g.drawString(String.valueOf(enemyHelth), getWidth() - 30, 20); 
 
 	 
 
