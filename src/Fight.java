@@ -143,6 +143,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			
 			if(myHelth<=0) {
+				y=790;
 				punched=false;
 				if(deadCount<5) {
 					System.out.println("Helth 1:"+deadCount);
@@ -214,6 +215,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			
 			if(enemyHelth<=0) {
+				b=790;
 				if(deadCount<5) {
 					System.out.println("Helth 1:"+deadCount);
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead1.jpg";
@@ -261,7 +263,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	public void fly() {
 		fly=true;
-		y=400;
+		//y=400;
 	}
 	
 	public void right() {
@@ -372,11 +374,16 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		//Skok
 		if(y<=600)
 			jump=false;
+		if(jump) {
+			holdX=2;
+			holdY=25;
+		}
 		if(!jump && move) {
-			holdY=-5;holdX=2;
+			holdY=-25;
+			holdX=2;
 		}
 		if(!jump && !move) {
-			holdY=-5;
+			holdY=-25;
 			holdX=-2;
 		}
 		
