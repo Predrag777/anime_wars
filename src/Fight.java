@@ -32,6 +32,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		this.f2=f2;
 	}
 	int count=0;
+	int enemyCount=0;
 	int x=100,y=790,holdX=0,holdY=0;
 	int a=700,b=790,holdA=0,holdB=0;
 	
@@ -55,6 +56,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	String enemyBaseAttacks[] = {"Punch.jpg", "MidKick.jpg","HeightKick.jpg"};
 	
 	int specX=0,specY=700,holdSpec;
+	
+	
 	boolean jump=false;
 	boolean fly=false;
 	boolean attack=false;
@@ -116,7 +119,14 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Slide.jpg";
 			}
 			if(punched) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.jpg";
+				if(count>10) {
+					System.out.println("Oporavio se");
+					punched=false;
+				}else {
+					System.out.println(count);
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.jpg";
+				}
+				count++;
 			}
 			
 			
@@ -431,10 +441,17 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		if(enemyAttack && a<=x+230) {
+			
+			holdX=-10;
 			myHelth-=5;
+			enemyCount++;
 			punched=true;
-		}else {
-			punched=false;
+			count=0;
+			if(enemyCount>=3) {
+				holdX=-80;
+				enemyCount=0;
+				enemyAttack=false;
+			}
 		}
 		
 		
