@@ -291,11 +291,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
-		System.out.println(specX+"     SSS      "+b);
+		//System.out.println(specX+"     SSS      "+b);
 		x+=holdX;y-=holdY;
-		a+=holdA;
+		a+=holdA;b+=holdB;
 		//b-=holdB;
-		System.out.println(y+"    ???    "+b);
+		
 		Timer time=new Timer(1000, this);
 		if(a<x+100) {
 			side=-1;
@@ -386,19 +386,25 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		if(x<a && a<=x+240) {
 			enemyAttack=enemyAttack ? false:true;
+			enemyChangeBase=false;
 		}
 		if(x<a && a>=x+240) {
 			enemyAttack=enemyAttack=false;
 		}
 		
 
-		if(enemyReceivedSpecAttack)
+		if(enemyReceivedSpecAttack) {
 			holdA=1;
-		System.out.println("BBBBBbBBB "+b);
-			if(b>750)
+			System.out.println(b+"    ???    "+holdB);
+		///System.out.println("BBBBBbBBB "+b);
+			if(b>785)
 				holdB=-5;
+			else
+				holdB=5;
+		}else
+			holdB=0;
 		
-		System.out.println("You: {X="+x+"  Y="+y+"}  ?  Enemy: {A="+a+"  "+b+"} => Attack="+enemyAttack);
+		//System.out.println("You: {X="+x+"  Y="+y+"}  ?  Enemy: {A="+a+"  "+b+"} => Move="+enemyChangeBase);
 		
 		
 	}
