@@ -291,6 +291,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
+		
 		//System.out.println(specX+"     SSS      "+b);
 		x+=holdX;y-=holdY;
 		a+=holdA;b+=holdB;
@@ -335,8 +336,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		//Specijalni napad
 		if(specAttack && faza2) {
 			specX+=holdSpec*side;
-			if(specX>=a-260) {
-				//System.out.println(+"     SSS      "+a);
+			if(specX>=a-260 && specY>b) {
+			    System.out.println(specY+"     SSS      "+b);
 				enemyHelth-=40;
 				enemyReceivedSpecAttack=true;
 				specAttack=false;
@@ -356,6 +357,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		/////////////AI Fighter 2
+		
+		
+		
+		
 		if(x<a && a>=x+210) {
 			holdA=-2;
 			enemyChangeBase=enemyChangeBase ? false:true;
@@ -404,7 +409,25 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}else
 			holdB=0;
 		
-		System.out.println(specX);
+		if(!enemyReceivedSpecAttack && ((x<a && specX>0 && specX>=a-600  && specX<=a-500) || b<790)) {
+			//System.out.println(x+" "+a+"  "+specX+"    "+b);
+			System.out.println(b);
+			enemyJump=true;
+			if(b>600)
+				holdB=-20;
+			else {
+				enemyJump=false;
+				holdB=20;
+			}
+			if(!enemyJump) {
+				b=770;
+				System.out.println("Wermaht "+b);
+			}
+		}
+		
+		
+		
+		//System.out.println(x+"   "+a+"    "+specX+"     "+a);
 		
 		//System.out.println("You: {X="+x+"  Y="+y+"}  ?  Enemy: {A="+a+"  "+b+"} => Move="+enemyChangeBase);
 		
