@@ -55,7 +55,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean enemyReceivedSpecAttack=false;
 	boolean enemyPunched=false;
 	
-	String enemyBaseAttacks[] = {"Punch.jpg", "MidKick.jpg","HeightKick.jpg"};
+	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
 	
 	int specX=0,specY=700,holdSpec;
 	
@@ -85,48 +85,46 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		BufferedImage wave;
 		//Timer timer=new Timer(1000,this);
 		try {
-			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+"Base.jpg";
+			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+"Base.png";
 			String s="";
 			
 			if(!changeBase) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Base2.jpg";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Base2.png";
 			}
 			
-			if(y<b) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Jump.jpg";
+			if(jump) {
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Jump.png";
 			}
 			if(attack) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punch.jpg";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punch.png";
 			}
 			if(midKick) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"MidKick.jpg";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"MidKick.png";
 			}
 			if(heightKick) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"HeightKick.jpg";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"HeightKick.png";
 			}
 			if(specAttack) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"SpecAttack.jpg";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"SpecAttack.png";
 				if(count==20) {
 					faza2=true;
 				}
 				if(faza2) {
 					count=0;
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"SpecAttack2.jpg";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"SpecAttack2.png";
 				}
 				count++;
-				//timer.start();
-			//	s=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"wave.jpg";
 			}
 			if(slide) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Slide.jpg";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Slide.png";
 			}
 			if(punched) {
 				if(count>10) {
 					System.out.println("Oporavio se");
 					punched=false;
 				}else {
-					System.out.println(count);
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.jpg";
+					System.out.println("Wermaht: "+count);
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.png";
 				}
 				count++;
 			}
@@ -137,7 +135,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					enemyPunched=false;
 				}else {
 					System.out.println("Enemy "+count);
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.jpg";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.png";
 				}
 				count++;
 			}
@@ -146,17 +144,14 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				y=790;
 				punched=false;
 				if(deadCount<5) {
-					System.out.println("Helth 1:"+deadCount);
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead1.jpg";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead1.png";
 				}else if(deadCount<10) {
-					System.out.println("Helth 2:"+deadCount);
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead2.jpg";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead2.png";
 				}else if(deadCount<15) {
-					System.out.println("Dead:"+deadCount);
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.jpg";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.png";
 					
 				}else {
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.jpg";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.png";
 					t.stop();				}
 				
 				deadCount++;
@@ -177,7 +172,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			g.drawImage(image,x+100*side*-1,y,200*side,200,null);
 			if(faza2) {
-				wave=ImageIO.read(new File("folder1/wave.jpg"));
+				wave=ImageIO.read(new File("folder1/wave.png"));
 				g.drawImage(wave, specX+200, specY+100,100*side,100,null);
 			}
 		} catch (IOException e) {
@@ -188,11 +183,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		BufferedImage fighter2;
 		
 		try {
-			String waff=f2.getFile()+"/"+f2.getName().toLowerCase()+"Base.jpg";
+			String waff=f2.getFile()+"/"+f2.getName().toLowerCase()+"Base.png";
 			
 			//System.out.println(waff);
 			if(!enemyChangeBase) {
-				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Base2.jpg";
+				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Base2.png";
 			}
 			int randomNum = (int)(Math.random() * 3);
 			
@@ -207,7 +202,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					enemyReceivedSpecAttack = false;
 					System.out.println("Prekini");
 	            } else {
-	                waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Burnt.jpg";
+	                waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Burnt.png";
 	            }
 				count++;
 				
@@ -217,16 +212,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(enemyHelth<=0) {
 				b=790;
 				if(deadCount<5) {
-					System.out.println("Helth 1:"+deadCount);
-					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead1.jpg";
+					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead1.png";
 				}else if(deadCount<10) {
-					System.out.println("Helth 2:"+deadCount);
-					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead2.jpg";
+					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead2.png";
 				}else if(deadCount<15) {
-					System.out.println("Dead:"+deadCount);
-					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead.jpg";
+					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead.png";
 				}else {
-					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead.jpg";
+					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead.png";
 					t.stop();				}
 				
 				deadCount++;
@@ -492,10 +484,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			//System.out.println(b);
 			enemyJump=true;
 			if(b>600)
-				holdB=-20;
+				holdB=-25;
 			else {
 				enemyJump=false;
-				holdB=20;
+				holdB=25;
 			}
 			if(!enemyJump) {
 				b=770;
@@ -532,7 +524,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		//System.out.println(x+"   "+a+"    "+specX+"     "+a);
 		
 		//System.out.println("You: {X="+x+"  Y="+y+"}  ?  Enemy: {A="+a+"  "+b+"} => Move="+enemyChangeBase);
-		
+		if(punched)
+			System.out.println(punched);
 		
 	}
 	
