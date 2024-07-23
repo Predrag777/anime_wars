@@ -395,7 +395,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 
 		if(enemyReceivedSpecAttack) {
 			holdA=1;
-			System.out.println(b+"    ???    "+holdB);
+			//System.out.println(b+"    ???    "+holdB);
 		///System.out.println("BBBBBbBBB "+b);
 			if(b>785)
 				holdB=-5;
@@ -403,6 +403,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				holdB=5;
 		}else
 			holdB=0;
+		
+		System.out.println(specX);
 		
 		//System.out.println("You: {X="+x+"  Y="+y+"}  ?  Enemy: {A="+a+"  "+b+"} => Move="+enemyChangeBase);
 		
