@@ -62,6 +62,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean heightKick=false;
 	boolean specAttack=false;
 	boolean move=false;//ide u desno false ide u levo
+	boolean punched=false;
 	
 	boolean faza1=false;
 	boolean faza2=false;
@@ -113,6 +114,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			if(slide) {
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Slide.jpg";
+			}
+			if(punched) {
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.jpg";
 			}
 			
 			
@@ -256,13 +260,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(code==KeyEvent.VK_SPACE) {//Popraviti
 			fly();
 		}
-		if(code==KeyEvent.VK_A) {
+		if(code==KeyEvent.VK_A && !punched) {
 			punch();
 		}
-		if(code==KeyEvent.VK_D ) {
+		if(code==KeyEvent.VK_D && !punched) {
 			midKick();
 		}
-		if(code==KeyEvent.VK_W ) {
+		if(code==KeyEvent.VK_W && !punched) {
 			heightKick();
 		}
 	
@@ -291,7 +295,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
-		
 		//System.out.println(specX+"     SSS      "+b);
 		x+=holdX;y-=holdY;
 		a+=holdA;b+=holdB;
@@ -333,6 +336,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			y=790;
 			holdX=0;		
 		}
+
 		//Specijalni napad
 		if(specAttack && faza2) {
 			specX+=holdSpec*side;
@@ -409,7 +413,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}else
 			holdB=0;
 		
-		if(!enemyReceivedSpecAttack && ((x<a && specX>0 && specX>=a-600  && specX<=a-500) || b<790)) {
+		if(((x<a && specX>0 && specX>=a-600  && specX<=a-500) || b<790)) {
 			//System.out.println(x+" "+a+"  "+specX+"    "+b);
 			System.out.println(b);
 			enemyJump=true;
@@ -423,8 +427,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				b=770;
 				System.out.println("Wermaht "+b);
 			}
+			
 		}
 		
+		if(enemyAttack && a<=x+230) {
+			myHelth-=5;
+			punched=true;
+		}else {
+			punched=false;
+		}
 		
 		
 		//System.out.println(x+"   "+a+"    "+specX+"     "+a);
