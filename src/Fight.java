@@ -154,6 +154,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				count++;
 			}
 			
+			if(ulty) {
+				if(count<30) {
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm.png";
+				}
+				count++;
+			}
+			
 			
 			
 			if(myHelth<=0) {
@@ -354,7 +361,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(code==KeyEvent.VK_W && !punched) {
 			heightKick();
 		}
-	
+		if(code==KeyEvent.VK_Q) {
+			ulty=true;
+		}
 		if(y==790) {
 			if(code==KeyEvent.VK_S) {
 				specAttack();
