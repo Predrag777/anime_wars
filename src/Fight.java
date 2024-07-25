@@ -50,6 +50,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	boolean enemyMove=false;
 	boolean enemyAttack=false;
+	boolean enemyHeightKick=false;
+	boolean enemyMidKick=false;
 	boolean enemyJump=false;
 	boolean retreatLeft=false;
 	boolean retreatRight=false;
@@ -72,6 +74,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean move=false;//ide u desno false ide u levo
 	boolean punched=false;
 	boolean defeated=false;
+	boolean ulty=false;
+	
 	boolean faza1=false;
 	boolean faza2=false;
 	
@@ -485,7 +489,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		enemyMove=true;
 		
 		if(x<a && a<=x+240 && !enemyPunched) {
-			enemyAttack=enemyAttack ? false:true;
+			enemyAttack=true;			
 			enemyChangeBase=false;
 		}
 		if(x<a && a>=x+240) {
