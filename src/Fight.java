@@ -52,6 +52,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean enemyAttack=false;
 	boolean enemyHeightKick=false;
 	boolean enemyMidKick=false;
+	boolean enemyPunch=false;
 	boolean enemyJump=false;
 	boolean retreatLeft=false;
 	boolean retreatRight=false;
@@ -148,7 +149,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					System.out.println("Oporavio se");
 					punched=false;
 				}else {
-					System.out.println("Wermaht: "+count);
+					//System.out.println("Wermaht: "+count);
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.png";
 				}
 				count++;
@@ -213,10 +214,51 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Base2.png";
 			}
 			int randomNum = (int)(Math.random() * 3);
-			
+			if(randomNum==0) {
+				enemyPunch=true;
+				enemyHeightKick=false;
+				enemyMidKick=false;
+			}else if(randomNum==1) {
+				enemyPunch=false;
+				enemyHeightKick=true;
+				enemyMidKick=false;
+			}else {
+				enemyPunch=false;
+				enemyHeightKick=false;
+				enemyMidKick=true;
+			}
 			
 			if(enemyAttack) {
-				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[randomNum];
+				if(enemyPunch) {
+					if(enemyCount<20) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[randomNum];
+					}else {
+						enemyCount=0;
+						enemyPunch=false;
+						enemyAttack=false;
+					}
+				}
+				if(enemyHeightKick) {
+					if(enemyCount<20) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[randomNum];
+					}else {
+						enemyCount=0;
+						enemyHeightKick=false;
+						enemyAttack=false;
+					}
+				}
+				if(enemyMidKick) {
+					if(enemyCount<20) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[randomNum];
+					}else {
+						enemyCount=0;
+						enemyMidKick=false;
+						enemyAttack=false;
+					}
+				}
+				
+				enemyCount++;
+				System.out.println(enemyPunch+"    "+enemyMidKick+"    "+enemyHeightKick+"    "+enemyCount);
 			}
 			
 			if(enemyReceivedSpecAttack) {
@@ -501,9 +543,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyAttack=true;			
 			enemyChangeBase=false;
 		}
-		if(x<a && a>=x+240) {
-			enemyAttack=enemyAttack=false;
-		}
+		/*if(x<a && a>=x+240) {
+			enemyAttack=false;
+		}*/
 		
 
 		if(enemyReceivedSpecAttack) {
