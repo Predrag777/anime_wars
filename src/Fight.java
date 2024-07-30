@@ -489,8 +489,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		//Specijalni napad
 		if(specAttack && faza2) {
 			specX+=holdSpec*side;
-			if(specX>=a-260 && specY<=b-90) {
+			//System.out.println(specY+"    "+b);
+			if(specX>=a-260 && specY<=b-100) {
 				enemyHelth-=40;
+				System.out.println(specY+"    "+b);
 				enemyReceivedSpecAttack=true;
 				specAttack=false;
 				specX=0;
@@ -585,11 +587,14 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}else
 			holdB=0;
 		
-		if(x<a && specX>=a-600) {// || b<=790
+		if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
+			System.out.println(x+" "+a+" "+specX);
 			enemyJump=true;
+			holdA=-20;
 			if(b>600)
 				holdB=-25;
 			else {
+				System.out.println("END");
 				enemyJump=false;
 				holdB=25;
 			}
@@ -606,7 +611,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			holdX=holdY=holdA=holdB=0;
 		}
 		
-		System.out.println("WAERMAHT SS   "+b+"   "+holdB);
+		//System.out.println("WAERMAHT SS   "+b+"   "+holdB);
 		
 		
 		//System.out.println(x+"   "+a+"    "+specX+"     "+a);
