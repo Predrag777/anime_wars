@@ -46,7 +46,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int startAttackTime;
 	
 	
-	int myHelth=100;
+	int myHelth=5;
 	int enemyHelth=100;
 	
 	boolean enemyMove=false;
@@ -92,7 +92,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		super.paintComponent(g);
 		BufferedImage image;
 		BufferedImage wave;
-		//Timer timer=new Timer(1000,this);
+		
 		try {
 			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+ulti_ss+"Base.png";
 			String s="";
@@ -132,7 +132,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				attackCount++;
 			}
 			if(specAttack) {
-				System.out.println(count);
+				//System.out.println(count);
 				if(count==20) {
 					faza2=true;
 				}else {
@@ -268,7 +268,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}
 				
 				enemyCount++;
-				System.out.println(enemyPunch+"    "+enemyMidKick+"    "+enemyHeightKick+"    "+enemyCount);
+				//System.out.println(enemyPunch+"    "+enemyMidKick+"    "+enemyHeightKick+"    "+enemyCount);
+			}
+			if(enemyJump) {
+				//System.out.println("WERMAHT");
+				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Jump.png";
 			}
 			
 			if(enemyReceivedSpecAttack) {
@@ -321,11 +325,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		    Font font = new Font("Arial", Font.BOLD, 30);
 		    g.setFont(font);
 		    g.drawString(String.valueOf(myHelth), 10, 60); 
-		    g.drawString(String.valueOf(enemyHelth), getWidth() - 60, 60); 
-
-		    
-
-			//Mogao sam ovo lepse da iskucam
+		    g.drawString(String.valueOf(enemyHelth), getWidth() - 60, 60);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -489,7 +489,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		//Specijalni napad
 		if(specAttack && faza2) {
 			specX+=holdSpec*side;
-			if(specX>=a-260 && specY>b) {
+			if(specX>=a-260 && specY<=b-90) {
 				enemyHelth-=40;
 				enemyReceivedSpecAttack=true;
 				specAttack=false;
@@ -519,7 +519,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		if(x<a && a>=x+210) {
-			holdA=-2;
+			holdA=-2;////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(x<a && a<=x+210){
 			retreatRight=true;
@@ -534,12 +534,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		if(x<a && retreatRight && a<800) {
-			holdA=5;
+			holdA=2;
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(x<a && a>800)
 			retreatRight=false;
 		if(x>a && retreatLeft && a>100) {
-			holdA=-5;
+			holdA=-2;
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(a<100)
 			retreatLeft = false;
@@ -552,31 +552,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 
-		if(enemyReceivedSpecAttack) {
-			holdA=1;
-			if(b>785)
-				holdB=-5;
-			else
-				holdB=5;
-		}else
-			holdB=0;
 		
-		if(((x<a && specX>0 && specX>=a-600  && specX<=a-500) || b<790)) {
-			//System.out.println(x+" "+a+"  "+specX+"    "+b);
-			//System.out.println(b);
-			enemyJump=true;
-			if(b>600)
-				holdB=-25;
-			else {
-				enemyJump=false;
-				holdB=25;
-			}
-			if(!enemyJump) {
-				b=770;
-				///System.out.println("Wermaht "+b);
-			}
-			
-		}
+		//System.out.println(specX+"  |  "+a+"   |  "+b);
+		
 		//System.out.println(x+"     "+a);
 		if((attack || midKick || heightKick) && x>=a-350) {
 			holdA+=50;
@@ -598,16 +576,44 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 		}
 		
+		if(enemyReceivedSpecAttack) {
+			holdA=1;
+			if(b>785)
+				holdB=-5;
+			else
+				holdB=5;
+		}else
+			holdB=0;
+		
+		if(x<a && specX>=a-600) {// || b<=790
+			enemyJump=true;
+			if(b>600)
+				holdB=-25;
+			else {
+				enemyJump=false;
+				holdB=25;
+			}
+			if(!enemyJump) {
+				b=770;
+				///System.out.println("Wermaht "+b);
+			}
+			
+			
+		}
+		
 		if(enemyHelth<=0 || myHelth<=0) {
 			enemyAttack=false;
 			holdX=holdY=holdA=holdB=0;
 		}
 		
+		System.out.println("WAERMAHT SS   "+b+"   "+holdB);
+		
+		
 		//System.out.println(x+"   "+a+"    "+specX+"     "+a);
 		
 		//System.out.println("You: {X="+x+"  Y="+y+"}  ?  Enemy: {A="+a+"  "+b+"} => Move="+enemyChangeBase);
-		if(punched)
-			System.out.println(punched);
+		//if(punched)
+		//	System.out.println(punched);
 		
 	}
 	
