@@ -132,9 +132,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				attackCount++;
 			}
 			if(specAttack) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack.png";
+				System.out.println(count);
 				if(count==20) {
 					faza2=true;
+				}else {
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack.png";
 				}
 				if(faza2) {
 					count=0;
@@ -160,11 +162,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				if(count<30) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm.png";
 					ulti_ss="Ulty";
+					
+				}else {
+					ulty=false;
+					count=0;
 				}
 				count++;
 			}
 			
-			System.out.println(ss);
+			//System.out.println(ss);
 			
 			
 			
