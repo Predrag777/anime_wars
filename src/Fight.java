@@ -41,6 +41,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int x=100,y=790,holdX=0,holdY=0;
 	int a=700,b=790,holdA=0,holdB=0;
+	String ulti_ss="";
 	
 	int startAttackTime;
 	
@@ -93,19 +94,19 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		BufferedImage wave;
 		//Timer timer=new Timer(1000,this);
 		try {
-			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+"Base.png";
+			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+ulti_ss+"Base.png";
 			String s="";
 			
 			if(!changeBase) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Base2.png";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Base2.png";
 			}
 			
 			if(jump) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Jump.png";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Jump.png";
 			}
 			if(attack) {
 				if(attackCount<5)
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punch.png";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch.png";
 				else {
 					attack=false;
 					attackCount=0;
@@ -114,7 +115,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			if(midKick) {
 				if(attackCount<8)
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"MidKick.png";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"MidKick.png";
 				else {
 					midKick=false;
 					attackCount=0;
@@ -123,7 +124,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			if(heightKick) {
 				if(attackCount<15)
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"HeightKick.png";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"HeightKick.png";
 				else {
 					heightKick=false;
 					attackCount=0;
@@ -131,18 +132,18 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				attackCount++;
 			}
 			if(specAttack) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"SpecAttack.png";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack.png";
 				if(count==20) {
 					faza2=true;
 				}
 				if(faza2) {
 					count=0;
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"SpecAttack2.png";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack2.png";
 				}
 				count++;
 			}
 			if(slide) {
-				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Slide.png";
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Slide.png";
 			}
 			if(punched) {
 				if(count>10) {
@@ -150,7 +151,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					punched=false;
 				}else {
 					//System.out.println("Wermaht: "+count);
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Punched.png";
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punched.png";
 				}
 				count++;
 			}
@@ -158,9 +159,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(ulty) {
 				if(count<30) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm.png";
+					ulti_ss="Ulty";
 				}
 				count++;
 			}
+			
+			System.out.println(ss);
 			
 			
 			
@@ -431,10 +435,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
-		//System.out.println(specX+"     SSS      "+b);
 		x+=holdX;y-=holdY;
 		a+=holdA;b+=holdB;
-		//b-=holdB;
 		
 		Timer time=new Timer(1000, this);
 		if(a<x+100) {
@@ -482,7 +484,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(specAttack && faza2) {
 			specX+=holdSpec*side;
 			if(specX>=a-260 && specY>b) {
-			    //System.out.println(specY+"     SSS      "+b);
 				enemyHelth-=40;
 				enemyReceivedSpecAttack=true;
 				specAttack=false;
@@ -543,15 +544,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyAttack=true;			
 			enemyChangeBase=false;
 		}
-		/*if(x<a && a>=x+240) {
-			enemyAttack=false;
-		}*/
 		
 
 		if(enemyReceivedSpecAttack) {
 			holdA=1;
-			//System.out.println(b+"    ???    "+holdB);
-		///System.out.println("BBBBBbBBB "+b);
 			if(b>785)
 				holdB=-5;
 			else
