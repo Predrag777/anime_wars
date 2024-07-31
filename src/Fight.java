@@ -46,6 +46,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int x=100,y=790,holdX=0,holdY=0;
 	int a=700,b=790,holdA=0,holdB=0;
+	int enemySpeed=2;
+	
+	
 	String ulti_ss="";
 	
 	int startAttackTime;
@@ -160,6 +163,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punched.png";
 				}
 				count++;
+			}
+			
+			if(jump && attack) {
+				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"JumpAttack.png";
 			}
 			
 			if(ulty) {
@@ -521,12 +528,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		if(x<a && a>=x+210) {
-			holdA=-15;////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			holdA=-enemySpeed;////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(x<a && a<=x+210){
 			retreatRight=true;
 		}else if(x>a && a<=x-210) {
-			holdA=15;
+			holdA=enemySpeed;
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(x>a && a>=x-210){
 			retreatLeft=true;
@@ -536,12 +543,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		if(x<a && retreatRight && a<800) {
-			holdA=15;
+			holdA=enemySpeed;
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(x<a && a>800)
 			retreatRight=false;
 		if(x>a && retreatLeft && a>100) {
-			holdA=-15;
+			holdA=-enemySpeed;
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(a<100)
 			retreatLeft = false;
