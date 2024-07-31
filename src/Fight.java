@@ -31,6 +31,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		this.f1=f1;
 		this.f2=f2;
 	}
+	
+	int myHelth=100;
+	int enemyHelth=100;
+	
+	
 	int count=0;
 	int enemyCount=0;
 	int deadCount=0;
@@ -46,8 +51,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int startAttackTime;
 	
 	
-	int myHelth=5;
-	int enemyHelth=100;
+	
 	
 	boolean enemyMove=false;
 	boolean enemyAttack=false;
@@ -554,13 +558,16 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyHelth-=5;
 			enemyPunched=true;
 		}
-		System.out.println("Napad brojac:  "+attackCount);
+		System.out.println("Napad brojac:  "+enemyCount);
 		
 		if(enemyAttack && a<=x+230 && !enemyPunched) {
 			
-			holdX=-10;
-			myHelth-=5;
-			enemyCount++;
+			
+			if(enemyCount<2) {
+				myHelth-=5;
+				holdX=-10;
+				enemyCount++;
+			}
 			punched=true;
 			count=0;
 			if(enemyCount>=3) {
