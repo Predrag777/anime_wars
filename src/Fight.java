@@ -141,7 +141,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				attackCount++;
 			}
 			if(specAttack) {
-				//System.out.println(count);
 				if(count==20) {
 					faza2=true;
 				}else {
@@ -197,11 +196,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				
 				deadCount++;
 			}
-			
-			
-			
-			
-			
 						
 			BufferedImage img=ImageIO.read(new File("background/background.jpeg"));
 			Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
@@ -589,7 +583,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyHelth-=5;
 			enemyPunched=true;
 		}
-		System.out.println("Napad brojac:  "+enemyCount);
+		//System.out.println("Napad brojac:  "+enemyCount);
+		
+		if(enemyPunched) {
+					
+		}
 		
 		if(enemyAttack && a<=x+230 && !enemyPunched) {
 			
@@ -632,7 +630,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			
 			
-		}
+		}System.out.println(enemyJump);
 		if(jump && x>=a-300) {
 			enemyEscape=true;
 		}
@@ -645,6 +643,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(specX==0 || specX>a) {
 			enemyJump=false;
 		}
+		
+		if(!enemyJump && b<790) {
+			holdB=25;
+		}
+		if(b>790)
+			b=790;
 		
 		if(enemyHelth<=0 || myHelth<=0) {
 			enemyAttack=false;
