@@ -307,7 +307,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					enemyPunched=false;
 					enemyCount=0;
 				}else {
-					System.out.println("Enemy "+enemyCount);
+					//System.out.println("Enemy "+enemyCount);
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Punched.png";
 				}
 				enemyCount++;
@@ -517,12 +517,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		if(x<a && a>=x+210) {
-			holdA=-2;////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			holdA=-15;////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(x<a && a<=x+210){
 			retreatRight=true;
 		}else if(x>a && a<=x-210) {
-			holdA=2;
+			holdA=15;
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(x>a && a>=x-210){
 			retreatLeft=true;
@@ -532,12 +532,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		if(x<a && retreatRight && a<800) {
-			holdA=2;
+			holdA=15;
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(x<a && a>800)
 			retreatRight=false;
 		if(x>a && retreatLeft && a>100) {
-			holdA=-2;
+			holdA=-15;
 			enemyChangeBase=enemyChangeBase ? false:true;
 		}else if(a<100)
 			retreatLeft = false;
@@ -549,11 +549,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyChangeBase=false;
 		}
 		
-		if((attack || midKick || heightKick) && x>=a-350) {
+		if((attack || midKick || heightKick) && x>=a-350 && attackCount<2) {
 			holdA+=50;
 			enemyHelth-=5;
 			enemyPunched=true;
 		}
+		System.out.println("Napad brojac:  "+attackCount);
 		
 		if(enemyAttack && a<=x+230 && !enemyPunched) {
 			
@@ -570,7 +571,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		if(enemyReceivedSpecAttack) {
-			holdA=1;
+			holdA=15;
 			if(b>785)
 				holdB=-5;
 			else
