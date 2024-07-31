@@ -84,6 +84,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean punched=false;
 	boolean defeated=false;
 	boolean ulty=false;
+	boolean reachTop=false;
 	
 	boolean faza1=false;
 	boolean faza2=false;
@@ -111,7 +112,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(jump) {
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Jump.png";
 			}
-			if(attack) {
+			if(attack && !jump) {
 				if(attackCount<5)
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch.png";
 				else {
@@ -120,7 +121,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}
 				attackCount++;
 			}
-			if(midKick) {
+			if(midKick && !jump) {
 				if(attackCount<8)
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"MidKick.png";
 				else {
@@ -129,7 +130,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}
 				attackCount++;
 			}
-			if(heightKick) {
+			if(heightKick && !jump) {
 				if(attackCount<15)
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"HeightKick.png";
 				else {
@@ -459,20 +460,31 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}else
 			side=1;
 		
-		//Skok
 		if(y<=600)
-			jump=false;
-		if(jump) {
-			holdX=2;
+			reachTop=true;
+		//Skok
+		if(jump && !reachTop && y>=600) {
+			holdX=10;
 			holdY=25;
 		}
-		if(!jump && move) {
+		if(reachTop && y<790 && move) {
+			System.out.println("Waffen");
 			holdY=-25;
-			holdX=2;
+			holdX=10;
+			if(y>=780) {
+				y=790;
+				jump=false;
+				reachTop=false;
+			}
 		}
-		if(!jump && !move) {
+		if(reachTop && y<790 && !move) {
 			holdY=-25;
-			holdX=-2;
+			holdX=-10;
+			if(y>780) {
+				y=790;
+				reachTop=false;
+				jump=false;
+			}
 		}
 		
 		//Slide
@@ -594,7 +606,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			holdB=0;
 		
 		if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
-			System.out.println(x+" "+a+" "+specX);
 			enemyJump=true;
 			holdA=-20;
 			if(b>600)
@@ -606,7 +617,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			if(!enemyJump) {
 				b=770;
-				///System.out.println("Wermaht "+b);
 			}
 			
 			
