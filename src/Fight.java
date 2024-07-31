@@ -463,8 +463,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(y<=600)
 			reachTop=true;
 		//Skok
-		if(jump && !reachTop && y>=600) {
+		if(jump && !reachTop && y>=600 && move) {
 			holdX=10;
+			holdY=25;
+		}
+		if(jump && !reachTop && y>=600 && !move) {
+			holdX=-10;
 			holdY=25;
 		}
 		if(reachTop && y<790 && move) {
