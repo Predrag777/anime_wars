@@ -46,7 +46,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int x=100,y=790,holdX=0,holdY=0;
 	int a=700,b=790,holdA=0,holdB=0;
-	int enemySpeed=2;
+	int enemySpeed=15;
 	
 	
 	String ulti_ss="";
@@ -633,7 +633,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			
 		}
-		if(jump) {
+		if(jump && x>=a-300) {
 			enemyEscape=true;
 		}
 		if(enemyEscape) {
