@@ -119,27 +119,33 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Jump.png";
 			}
 			if(attack && !jump) {
-				if(attackCount<5)
+				if(attackCount<5) {
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch2.png";
+				}else if(attackCount<10) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch.png";
-				else {
+				}else {
 					attack=false;
 					attackCount=0;
 				}
 				attackCount++;
 			}
 			if(midKick && !jump) {
-				if(attackCount<8)
+				if(attackCount<5) {
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick1.png";
+				}else if(attackCount<20) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"MidKick.png";
-				else {
+				}else {
 					midKick=false;
 					attackCount=0;
 				}
 				attackCount++;
 			}
 			if(heightKick && !jump) {
-				if(attackCount<15)
+				if(attackCount<5) {
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick1.png";
+				}else if(attackCount<20) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"HeightKick.png";
-				else {
+				}else {
 					heightKick=false;
 					attackCount=0;
 				}
@@ -239,34 +245,49 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(!enemyChangeBase) {
 				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Base2.png";
 			}
-			int randomNum = (int)(Math.random() * 3);
-			if(randomNum==0) {
-				enemyPunch=true;
-				enemyHeightKick=false;
-				enemyMidKick=false;
-			}else if(randomNum==1) {
-				enemyPunch=false;
-				enemyHeightKick=true;
-				enemyMidKick=false;
-			}else {
-				enemyPunch=false;
-				enemyHeightKick=false;
-				enemyMidKick=true;
+			if(!enemyAttack) {
+				int randomNum = (int)(Math.random() * 3);
+				if(randomNum==0) {
+					enemyPunch=true;
+					enemyHeightKick=false;
+					enemyMidKick=false;
+				}else if(randomNum==1) {
+					enemyPunch=false;
+					enemyHeightKick=true;
+					enemyMidKick=false;
+				}else {
+					enemyPunch=false;
+					enemyHeightKick=false;
+					enemyMidKick=true;
+				}
 			}
 			
 			if(enemyAttack) {
 				if(enemyPunch) {
-					if(enemyCount<20) {
-						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[randomNum];
+					/*if(enemyCount<20) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[0];
+					}else {
+						enemyCount=0;
+						enemyPunch=false;
+						enemyAttack=false;
+					}*/
+					if(enemyCount<5) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Punch1.png";
+					}else if(enemyCount<10) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[0];
 					}else {
 						enemyCount=0;
 						enemyPunch=false;
 						enemyAttack=false;
 					}
+					
+					
 				}
 				if(enemyHeightKick) {
-					if(enemyCount<20) {
-						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[randomNum];
+					if(enemyCount<10) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Kick.png";
+					}else if(enemyCount<15) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[2];
 					}else {
 						enemyCount=0;
 						enemyHeightKick=false;
@@ -274,8 +295,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					}
 				}
 				if(enemyMidKick) {
-					if(enemyCount<20) {
-						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[randomNum];
+					if(enemyCount<10) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Kick.png";
+					}else if(enemyCount<15) {
+						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[1];
 					}else {
 						enemyCount=0;
 						enemyMidKick=false;
@@ -544,7 +567,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		//Specijalni napad
 		if(specAttack && faza2) {
 			specX+=holdSpec*side;
-			if(specX>=a-260 && specX<a && b>660) {
+			if(specX>=a-260 && b>660) {
 				enemyHelth-=40;
 				enemyJumpAttack=enemyJump=false;
 				

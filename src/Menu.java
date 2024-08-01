@@ -104,7 +104,7 @@ public class Menu {
 				if(count>=fighters.length || fighters[count]==null)
 					count=0;
 				fighter1=fighters[count];
-				System.out.println(count);
+				//System.out.println(count);
 				txt.setText(fighters[count].getName());
 				String url="images/";
 				ImageIcon img=new ImageIcon(url+fighters[count].getImg());
