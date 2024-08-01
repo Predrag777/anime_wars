@@ -592,7 +592,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		
-		
+		if(b>=760)
+			enemyJumpAttack=false;
 		
 		
 		if(x<a && retreatRight && a<800) {
@@ -681,7 +682,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			b=790;
 		}
 		
-		if(specX==0 || specX>a) {
+		if(specAttack && (specX==0 || specX>a)) {
 			enemyJump=false;
 		}
 		
