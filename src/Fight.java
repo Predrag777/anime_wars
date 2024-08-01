@@ -39,6 +39,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int count=0;
 	int enemyCount=0;
 	int deadCount=0;
+	int blockCount=0;
 	
 	int enemyAttackCount=0;
 	int attackCount=0;
@@ -86,6 +87,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean defeated=false;
 	boolean ulty=false;
 	boolean reachTop=false;
+	boolean block=false;
 	
 	boolean faza1=false;
 	boolean faza2=false;
@@ -178,6 +180,17 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					count=0;
 				}
 				count++;
+			}
+			
+			if(block) {
+				if(blockCount<20) {
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Block.png";
+				}else {
+					block=false;
+					blockCount=0;
+				}
+				blockCount++;
+				//System.out.println("SS");
 			}
 			
 			if(myHelth<=0) {
@@ -277,7 +290,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				
 				if (count>=30) {
 					enemyReceivedSpecAttack = false;
-					System.out.println("Prekini");
 	            } else {
 	                waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Burnt.png";
 	            }
@@ -427,6 +439,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(code==KeyEvent.VK_Q) {
 			ulty=true;
 		}
+		if(code==KeyEvent.VK_F) {
+			block=true;
+		}
 		if(y==790) {
 			if(code==KeyEvent.VK_S) {
 				specAttack();
@@ -441,7 +456,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				changeBase=changeBase ? false:true;
 				left();
 			}
-			if(code==KeyEvent.VK_F) {
+			if(code==KeyEvent.VK_E) {
 				slide();
 			}
 		}
@@ -540,6 +555,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		
+		
+		
 		/////////////AI Fighter 2
 		
 		
@@ -589,7 +606,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					
 		}
 		
-		if(enemyAttack && a<=x+230 && !enemyPunched) {
+		if(enemyAttack && a<=x+230 && !enemyPunched && !block) {
 			
 			
 			if(enemyCount<2) {
@@ -630,7 +647,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			
 			
-		}System.out.println(enemyJump);
+		}
 		if(jump && x>=a-300) {
 			enemyEscape=true;
 		}
@@ -654,6 +671,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyAttack=false;
 			holdX=holdY=holdA=holdB=0;
 		}
+		
 
 		
 	}
