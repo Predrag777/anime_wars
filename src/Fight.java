@@ -70,6 +70,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean enemyReceivedSpecAttack=false;
 	boolean enemyPunched=false;
 	boolean enemyEscape=false;
+	boolean enemyReachTop=false;
 	boolean enemyJumpAttack=false;
 	
 	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
@@ -652,12 +653,18 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
 			enemyJump=true;
 			holdA=-20;
-			if(b>600)
+			if(b<600)
+				enemyReachTop=true;
+			if(!enemyReachTop) {
 				holdB=-25;
-			else {
-				System.out.println("END");
-				enemyJump=false;
+			}else
 				holdB=25;
+			
+			if(b<790 && enemyReachTop) {
+				holdB=0;
+				b=790;
+				enemyJump=false;
+				enemyReachTop=false;
 			}
 			if(!enemyJump) {
 				b=770;
