@@ -582,8 +582,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			retreatLeft=true;
 		}
 		
-		System.out.println(enemyJumpAttack+"    "+x+"     "+(a-300));/////////////////////////////////////////////////////////
-		if(enemyJump && x>=a-350) {
+		System.out.println(enemyJumpAttack+"    "+enemyJump);/////////////////////////////////////////////////////////
+		if(enemyJump && x>=a-350 && y>=b-120) {
 			enemyJumpAttack=true;
 			if(x>=a-350 && !block) {
 				myHelth-=10;
@@ -658,17 +658,17 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(!enemyReachTop) {
 				holdB=-25;
 			}else
-				holdB=25;
+				holdB=10;
 			
 			if(b<790 && enemyReachTop) {
 				holdB=0;
-				b=790;
+				//b=790;
 				enemyJump=false;
 				enemyReachTop=false;
 			}
-			if(!enemyJump) {
-				b=770;
-			}
+			/*if(!enemyJump) {
+				b=790;
+			}*/
 			
 			
 		}
