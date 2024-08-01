@@ -297,7 +297,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(enemyReceivedSpecAttack) {
 				
 				if (count>=30) {
-					enemyReceivedSpecAttack = false;
+					enemyReceivedSpecAttack = false;count=0;
 	            } else {
 	                waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Burnt.png";
 	            }
@@ -475,6 +475,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
+		if(x+holdX<=100 || x+holdX>=900) {
+			holdX=0;
+		}
+		if(a+holdA<=100 || a+holdA>=900) {
+			holdA=0;
+		}
 		x+=holdX;y-=holdY;
 		a+=holdA;b+=holdB;
 		
@@ -537,10 +543,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 
 		//Specijalni napad
 		if(specAttack && faza2) {
+			//System.out.println(specX+"   "+specY+"    "+a+"    "+b+"   =>  "+(specX>=a-260)+"     "+(specY>=b-300)+"");
 			specX+=holdSpec*side;
-			if(specX>=a-260 && specY<=b-100) {
+			if(specX>=a-260 && specY>=b-300) {
 				enemyHelth-=40;
-				//System.out.println(specY+"    "+b);
+				enemyJumpAttack=enemyJump=false;
+				
 				enemyReceivedSpecAttack=true;
 				specAttack=false;
 				specX=0;
@@ -582,7 +590,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			retreatLeft=true;
 		}
 		
-		System.out.println(enemyJumpAttack+"    "+enemyJump);/////////////////////////////////////////////////////////
+		//System.out.println(enemyJumpAttack+"    "+enemyJump);/////////////////////////////////////////////////////////
 		if(enemyJump && x>=a-350 && y>=b-120) {
 			enemyJumpAttack=true;
 			if(x>=a-350 && !block) {
