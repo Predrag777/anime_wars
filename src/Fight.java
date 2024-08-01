@@ -47,7 +47,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int x=100,y=790,holdX=0,holdY=0;
 	int a=700,b=790,holdA=0,holdB=0;
-	int enemySpeed=3;
+	int enemySpeed=15;
 	
 	
 	String ulti_ss="";
@@ -503,7 +503,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			holdY=25;
 		}
 		if(reachTop && y<790 && move) {
-			System.out.println("Waffen");
+			//System.out.println("Waffen");
 			holdY=-25;
 			holdX=10;
 			if(y>=780) {
@@ -543,9 +543,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 
 		//Specijalni napad
 		if(specAttack && faza2) {
-			//System.out.println(specX+"   "+specY+"    "+a+"    "+b+"   =>  "+(specX>=a-260)+"     "+(specY>=b-300)+"");
 			specX+=holdSpec*side;
-			if(specX>=a-260 && specY>=b-300) {
+			if(specX>=a-260 && specX<a && b>660) {
 				enemyHelth-=40;
 				enemyJumpAttack=enemyJump=false;
 				
@@ -570,12 +569,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		
-		
-		
-		
 		/////////////AI Fighter 2
-		
-		
 		
 		
 		if(x<a && a>=x+210) {
