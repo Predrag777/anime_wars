@@ -640,7 +640,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(enemyPunched) {
 					
 		}
-		
+		enemyAttack=false;
 		if(enemyAttack && a<=x+300 && !enemyPunched && !block) {
 			System.out.println(enemyAttackCount);
 			if(enemyCount2<=3 && enemyAttackCount>10) {
