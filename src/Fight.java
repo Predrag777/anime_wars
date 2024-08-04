@@ -170,6 +170,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(punched) {
 				if(count>10) {
 					punched=false;
+					count=0;
 				}else {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punched.png";
 				}
@@ -214,7 +215,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.png";
 				}else {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.png";
-					t.stop();				
+					t.stop();	
+					deadCount=0;
 				}
 				
 				deadCount++;
@@ -341,7 +343,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead.png";
 				}else {
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead.png";
-					t.stop();				}
+					t.stop();				deadCount=0;}
 				
 				deadCount++;
 			}
@@ -630,7 +632,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				retreatLeft = false;
 		}else {
 			enemyChangeBase=enemyChangeBase ? false:true;
-			holdA=-enemySpeed;
+			if(a>=950)
+				holdA=-enemySpeed;
+			else
+				holdA=enemySpeed;
 		}
 		
 		if(enemyReceivedSpecAttack) {
