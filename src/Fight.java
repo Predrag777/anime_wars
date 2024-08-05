@@ -34,6 +34,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int myHelth=100;
 	int enemyHelth=100;
+	int borders=190;
 	
 	
 	int count=0;
@@ -506,12 +507,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 
-		if((a+holdA<=50 && holdA<0) || (a+holdA>=900 && holdA>0)) {
-			if(holdA<0)
-				holdA=-enemySpeed;
-			else
-				holdA=enemySpeed;
-		}
+		/*if((a+holdA<=50 && holdA<0) || (a+holdA>=900 && holdA>0)) {
+			holdA=0;
+		}*/
 		
 		x+=holdX;y-=holdY;
 		a+=holdA;b+=holdB;
@@ -600,17 +598,17 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		
-		/////////////AI Fighter 2
+		/////////////AI Fighter 2//////////////////////////////////////////////////////////////////////////////////////////////
 		System.out.println(enemyCount+"      "+count);
 		if(enemyMove) {
 			enemyChangeBase=enemyChangeBase ? false:true;
-			if(x<a && a>=x+210) {
+			if(x<a && a>=x+borders) {
 				holdA=-enemySpeed;////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			}else if(x<a && a<=x+210){
+			}else if(x<a && a<=x+borders){
 				retreatRight=true;
-			}else if(x>a && a<=x-210) {
+			}else if(x>a && a<=x-borders) {
 				holdA=enemySpeed;
-			}else if(x>a && a>=x-210){
+			}else if(x>a && a>=x-borders){
 				retreatLeft=true;
 			}
 			
@@ -632,10 +630,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				retreatLeft = false;
 		}else {
 			enemyChangeBase=enemyChangeBase ? false:true;
-			if(a>=950)
-				holdA=-enemySpeed;
-			else
-				holdA=enemySpeed;
+			if(a>=800 || a<x+250)
+				enemyMove=true;
 		}
 		
 		if(enemyReceivedSpecAttack) {
@@ -663,12 +659,35 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 		}
 		
+		if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
+			enemyJump=true;
+			holdA=-20;
+			if(b<600)
+				enemyReachTop=true;
+			if(!enemyReachTop) {
+				holdB=-25;
+			}else
+				holdB=10;
+			
+			if(b<790 && enemyReachTop) {
+				holdB=0;
+				enemyJump=false;
+				enemyReachTop=false;
+				System.out.println("WERMAHT");
+			}
+		}
+		
 		if(jump && x>=a-300) {
 			enemyEscape=true;
 			holdA=5;
 			holdB=0;
 			b=790;
+			enemyMove=false;
 			
+		}
+		
+		if(!enemyJump && !enemyReceivedSpecAttack) {
+			b=790;
 		}
 		
 		
