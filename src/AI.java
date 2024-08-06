@@ -2,36 +2,47 @@ import java.awt.image.BufferedImage;
 
 public class AI {
 	
-	private boolean init;
 	private boolean move;
 	private boolean attack;
-	private boolean deffend;
+	private boolean defend;
+	private int health;
+	private int x,y;
+	private int a,b;
 	
-	public AI(boolean init, boolean move, boolean attack, boolean deffend) {
-		this.init=init;
+	int borders=190;
+	boolean retreatRight=false;
+	boolean retreatLeft=false;
+	
+	public AI(int health, int x, int y, int a, int b, boolean move, boolean attack, boolean defend) {
+		this.health=health;
 		this.move=move;
 		this.attack=attack;
-		this.deffend=deffend;
-	}
-	
-	public void StateFiniteMachine(int posX, int posY, int enemyPosX, int enemyPosY) {
-		if(this.init) {
-			System.out.println("Ovo je prva pozicija init");
-			while(posX<300) {
-				posX++;
-			}
-			this.init=false;
-		}else if(this.move) {
-			System.out.println("Pomjeraj");
-			while(posX<=enemyPosX-20) {
-				posX+=1;
-			}
-			this.move=false;
-			this.attack=true;
-		}else if(this.attack) {
-			System.out.println("Attack");
-			//attack()
-		}
+		this.defend=defend;
+		this.x=x;
+		this.y=y;
+		
+		this.b=b;
+		this.a=a;
 		
 	}
+	
+	public int move() {// 0 stoj, 1 napred, 2 nazad, 3 nazad desno, 4 nazad levo
+		if(!retreatRight && x<a && a>=x+borders) {
+			retreatRight=false;
+			return 1;
+		}else if(x<a && a<=x+borders){
+			retreatRight=true;;
+			return 3;
+		}else if(x>a && a<=x-borders) {
+			return 2;
+		}else if(x>a && a>=x-borders){
+			return 4;
+		}
+		
+		
+		return 0;
+	}
+	
+	
+	
 }
