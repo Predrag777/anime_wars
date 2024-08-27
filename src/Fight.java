@@ -44,7 +44,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int enemyAttackCount=0;
 	int attackCount=0;
-	int enemyAttackedCOunt=0;
+	int enemyAttackedCount=0;
 	
 	
 	int x=100,y=790,holdX=0,holdY=0;
@@ -326,13 +326,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			if(enemyReceivedSpecAttack) {
 				
-				if (enemyAttacked>=30) {
+				if (enemyAttackedCount>=30) {
 					enemyReceivedSpecAttack = false;
 					enemyAttackCount=0;
 	            } else {
 	                waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Burnt.png";
 	            }
-				enemyAttackCount++;
+				enemyAttackedCount++;
 				
 			}
 			
@@ -603,7 +603,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		/////////////AI Fighter 2//////////////////////////////////////////////////////////////////////////////////////////////
-		System.out.println(enemyMove+"   "+enemyAttack+"    "+enemyAttackCount);//Problem true true Fixiraj to!!!!!!!!!!!!!!!!!!
+		//System.out.println(enemyMove+"   "+enemyAttack+"    "+enemyAttackedCount);//Problem true true Fixiraj to!!!!!!!!!!!!!!!!!!
 
 		if(enemyAttackCount>20)
 			enemyAttackCount=0;
