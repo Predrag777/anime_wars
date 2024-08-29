@@ -13,6 +13,11 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -50,6 +55,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyAttackConstr=8;
 			enemyNumberAttack=6;
 		}
+		playSound("back_sound.wav", 100);
 		System.out.println(level+"    "+enemySpeed+"    "+enemyAttackConstr);
 	}
 	
@@ -154,6 +160,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}else {
 					attack=false;
 					attackCount=0;
+					if(Math.abs(x-a)<200) {
+						enemyHelth-=5;
+						enemyPunched=true;
+						playSound("punch.wav",1);
+					}
 				}
 				attackCount++;
 			}
@@ -165,6 +176,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}else {
 					midKick=false;
 					attackCount=0;
+					if(Math.abs(x-a)<=200) {
+						enemyHelth-=5;
+						enemyPunched=true;
+						playSound("kick1.wav",1);
+					}
 				}
 				attackCount++;
 			}
@@ -176,10 +192,16 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}else {
 					heightKick=false;
 					attackCount=0;
+					if(Math.abs(x-a)<=200) {
+						enemyHelth-=5;
+						enemyPunched=true;
+						playSound("kick1.wav",1);
+					}
 				}
 				attackCount++;
 			}
 			if(specAttack) {
+				
 				if(count==20) {
 					faza2=true;
 				}else {
@@ -352,7 +374,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyAttackCount=0;
 						enemyMidKick=false;
 						enemyAttack=false;
-						if(x<a && a<x+200)
+						if(x<a && a<x+200 && b>=y)
 							myHelth-=15;
 						
 						selectNewAttack=true;
@@ -514,6 +536,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			fly();
 		}
 		if(code==KeyEvent.VK_A && !punched) {
+			
 			punch();
 		}
 		if(code==KeyEvent.VK_D && !punched) {
@@ -523,6 +546,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			heightKick();
 		}
 		if(code==KeyEvent.VK_Q) {
+			
 			ulty=true;
 		}
 		if(code==KeyEvent.VK_F) {
@@ -530,6 +554,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		if(y==790) {
 			if(code==KeyEvent.VK_S) {
+				playSound("kamehamehaa.wav",0);
 				specAttack();
 				//startAttackTime=System.currentTimeMillis();
 			}
@@ -549,6 +574,23 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 	}
 	
+	
+	public static void playSound(String soundFile, int loopCount) {
+	    try {
+	        File soundPath = new File(soundFile);
+	        AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundPath);
+	        Clip clip = AudioSystem.getClip();
+
+	        clip.open(audioStream);
+	        clip.loop(loopCount);  // Ponavljanje zvuka
+	        clip.start();
+	    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
@@ -558,7 +600,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		
-
+System.out.println(Math.abs(x-a)+"   "+a+"    "+x);
 		if((a+holdA<=50 && holdA<0) || (a+holdA>=900 && holdA>0)) {
 			holdA=0;
 		}
@@ -643,10 +685,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			faza2=false;
 		}
 		
-		if((attack || midKick || heightKick) &&(x>=a-200)) {
+		/*if((attack || midKick || heightKick) &&(x>=a-200)) {
 			//System.out.println("PUNCHED");
 			enemyPunched=true;
-		}
+		}*/
 		
 		
 		/////////////AI Fighter 2//////////////////////////////////////////////////////////////////////////////////////////////
@@ -715,31 +757,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		//enemy Attack controls
 		if((x<a && a<=x+200 && !enemyPunched && !block && !enemyEscape)) {
-			System.out.println(x+"  ATTACK  "+a+ "    "+enemyAttackCount);
+			//System.out.println(x+"  ATTACK  "+a+ "    "+enemyAttackCount);
 			enemyAttack=true;
 			enemyMove=false;
 			holdA=0;
-			
-			/*enemyAttack=true;
-			enemyMove=false;
-			holdA=0;
-			if(removeHealth) {
-				myHelth-=5;
-				holdX=-10;
-				punched=true;
-			}
-			
-			//enemyNumberAttack, enemyCounterAttacks=0;
-			if(enemyCounterAttacks>=enemyNumberAttack) {
-				holdX=-80;
-				enemyCount2=0;
-			}
-		}else {
-			enemyCounterAttacks=0;
-			enemyMove=true;*/
 		}
 		
-		/*if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
+		if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
 			enemyJump=true;
 			holdA=-20;
 			if(b<600)
@@ -768,81 +792,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(!enemyJump && !enemyReceivedSpecAttack) {
 			b=790;
 		}
-		if(enemyAttack)
-			enemyMove=false;
-		else
-			enemyMove=true;
-		
-		
-		/*
-		if(b>=760)
-			enemyJumpAttack=false;
-		
-		
-		
-		if(x<a && a<=x+240 && !enemyPunched) {
-			enemyAttack=true;			
-			enemyChangeBase=false;
-		}
-		
-		if((attack || midKick || heightKick) && x>=a-350 && attackCount<2) {
-			holdA+=50;
-			enemyHelth-=5;
-			enemyPunched=true;
-		}
-		
-		if(enemyPunched) {
-					
-		}
 
 		
-		
-		
-		if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
-			enemyJump=true;
-			holdA=-20;
-			if(b<600)
-				enemyReachTop=true;
-			if(!enemyReachTop) {
-				holdB=-25;
-			}else
-				holdB=10;
-			
-			if(b<790 && enemyReachTop) {
-				holdB=0;
-				enemyJump=false;
-				enemyReachTop=false;
-			}
-		}
-		
-		}
-		if(enemyEscape) {
-			holdA=5;
-			holdB=0;
-			b=790;
-		}
-		
-		if(specAttack && (specX==0 || specX>a)) {
-			enemyJump=false;
-		}
-		
-		if(!enemyJump && b<790) {
-			holdB=25;
-		}
-		if(b>790)
-			b=790;
-		enemyAttack=false;
-		if(enemyAttack) {
-			System.out.println("KURAC");
-			holdA=0;
-		}else {
-			holdA=-enemySpeed;
-		}
-		
-		if(enemyHelth<=0 || myHelth<=0) {
-			enemyAttack=false;
-			holdX=holdY=holdA=holdB=0;
-		}*/
 		
 		
 		
