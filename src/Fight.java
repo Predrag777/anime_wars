@@ -161,6 +161,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyHelth-=5;
 						enemyPunched=true;
 						playSound("punch.wav",0);
+						attackCount=30;
 					}
 				}else {
 					attack=false;
@@ -178,6 +179,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyHelth-=5;
 						enemyPunched=true;
 						playSound("kick1.wav",0);
+						attackCount=30;
 					}
 				}else {
 					midKick=false;
@@ -195,6 +197,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyHelth-=5;
 						enemyPunched=true;
 						playSound("punch2.wav",0);
+						attackCount=30;
 					}
 				}else {
 					heightKick=false;
@@ -760,14 +763,14 @@ System.out.println(Math.abs(x-a)+"   "+a+"    "+x);
 		
 		
 		//enemy Attack controls
-		if((x<a && a<=x+200 && !enemyPunched && !block && !enemyEscape)) {
+		if((x<a && a<=x+200 && !enemyReceivedSpecAttack && !enemyPunched && !block && !enemyEscape)) {
 			//System.out.println(x+"  ATTACK  "+a+ "    "+enemyAttackCount);
 			enemyAttack=true;
 			enemyMove=false;
 			holdA=0;
 		}
 		
-		if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
+		if(x<a && specX>=a-600 && specX<=a-100 && specX>0 && !enemyReceivedSpecAttack && !enemyPunched) {// || b<=790
 			enemyJump=true;
 			holdA=-20;
 			if(b<600)
