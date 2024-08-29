@@ -87,10 +87,18 @@ public class Menu {
         JLabel lblImg2 = new JLabel("");
         lblImg2.setBounds(324, 22, 273, 275);
         backgroundPanel.add(lblImg2);
+        
+        fighter1 = fighters[count];
+        txt.setText(fighters[count].getName());
+        String url = "images/";
+        ImageIcon img = new ImageIcon(url + fighters[count].getImg());
+        imgLbl.setIcon(img);
 
         JButton btnNext = new JButton("Next");
         btnNext.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+            	count++;
+            	System.out.println(count);
                 if (count >= fighters.length || fighters[count] == null)
                     count = 0;
                 fighter1 = fighters[count];
@@ -98,13 +106,13 @@ public class Menu {
                 String url = "images/";
                 ImageIcon img = new ImageIcon(url + fighters[count].getImg());
                 imgLbl.setIcon(img);
-                count++;
+                
             }
         });
         btnNext.setBounds(39, 403, 117, 25);
         backgroundPanel.add(btnNext);
 
-        JButton btnSubmit = new JButton("Submit");
+        JButton btnSubmit = new JButton("Fight");
         btnSubmit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 Random rand = new Random();
