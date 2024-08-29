@@ -262,6 +262,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(myHelth<=0) {
 				y=790;
 				punched=false;
+				enemyAttack=false;
 				if(deadCount<5) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead1.png";
 				}else if(deadCount<10) {
@@ -271,6 +272,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}else {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.png";
 					playSound("vegeta_won.wav",0);
+					
 					t.stop();	
 					deadCount=0;
 				}
@@ -709,10 +711,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			faza2=false;
 		}
 		
-		/*if((attack || midKick || heightKick) &&(x>=a-200)) {
-			//System.out.println("PUNCHED");
-			enemyPunched=true;
-		}*/
 		
 		
 		/////////////AI Fighter 2//////////////////////////////////////////////////////////////////////////////////////////////
