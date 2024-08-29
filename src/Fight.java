@@ -305,7 +305,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Base2.png";
 			}
 			
-			if(enemyAttack || chase) {//enemyNumberAttack, enemyCounterAttacks=0;
+			if((enemyAttack || chase) && !enemyMove) {//enemyNumberAttack, enemyCounterAttacks=0;
 				if(enemyCounterAttacks<enemyNumberAttack)
 					chase=true;
 				else {
@@ -335,7 +335,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Punch1.png";
 					}else if(enemyAttackCount<enemyAttackConstr) {//<10
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[0];
-						removeHealth=true;
+						if(x<a && a<x+200) {
+							myHelth-=5;
+							playSound("punch.wav",0);
+							punched=true;
+							enemyAttackCount=30;
+						}
 						
 					}else {
 						removeHealth=false;
@@ -343,8 +348,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyPunch=false;
 						enemyAttack=false;
 						enemyCounterAttacks++;
-						if(x<a && a<x+200)
-							myHelth-=5;
+						
 						selectNewAttack=true;
 					}
 					
@@ -355,15 +359,20 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Kick.png";
 					}else if(enemyAttackCount<enemyAttackConstr) {
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[2];
-						removeHealth=true;
+						//removeHealth=true;
+						if(x<a && a<x+200) {
+							myHelth-=8;
+							punched=true;
+							enemyAttackCount=30;
+							playSound("kick1.wav",0);
+						}
 					}else {
 						removeHealth=false;
 						enemyAttackCount=0;
 						enemyHeightKick=false;
 						enemyAttack=false;
 						enemyCounterAttacks++;
-						if(x<a && a<x+200)
-							myHelth-=8;
+						
 						
 						selectNewAttack=true;
 					}
@@ -372,16 +381,21 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					if(enemyAttackCount<enemyAttackConstr/2) {
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Kick.png";
 					}else if(enemyAttackCount<enemyAttackConstr) {
-						removeHealth=true;
+						//removeHealth=true;
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[1];
+						if(x<a && a<x+200 && b>=y) {
+							myHelth-=15;
+							punched=true;
+							enemyAttackCount=30;
+							playSound("punch2.wav",0);
+						}
 					}else {
 						enemyCounterAttacks++;
 						removeHealth=false;
 						enemyAttackCount=0;
 						enemyMidKick=false;
 						enemyAttack=false;
-						if(x<a && a<x+200 && b>=y)
-							myHelth-=15;
+						
 						
 						selectNewAttack=true;
 						
@@ -448,6 +462,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			
 			if(enemyPunched) {
+				enemyAttack=false;
 				if(enemyCount>10) {
 					enemyPunched=false;
 					enemyCount=0;
@@ -607,7 +622,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		
-System.out.println(Math.abs(x-a)+"   "+a+"    "+x);
+		System.out.println(enemyAttack+"    "+enemyMove);
 		if((a+holdA<=50 && holdA<0) || (a+holdA>=900 && holdA>0)) {
 			holdA=0;
 		}
@@ -673,7 +688,7 @@ System.out.println(Math.abs(x-a)+"   "+a+"    "+x);
 		//Specijalni napad
 		if(specAttack && faza2) {
 			specX+=holdSpec*side;
-			if(specX>=a-260 && b>660) {
+			if(specX>=a-260 && b>700) {
 				enemyHelth-=40;
 				enemyJumpAttack=enemyJump=false;
 				
@@ -753,6 +768,7 @@ System.out.println(Math.abs(x-a)+"   "+a+"    "+x);
 		
 		if(enemyReceivedSpecAttack) {
 			holdA=15;
+			enemyAttack=false;
 			if(b>785)
 				holdB=-5;
 			else
@@ -772,6 +788,7 @@ System.out.println(Math.abs(x-a)+"   "+a+"    "+x);
 		
 		if(x<a && specX>=a-600 && specX<=a-100 && specX>0 && !enemyReceivedSpecAttack && !enemyPunched) {// || b<=790
 			enemyJump=true;
+			enemyAttack=false;
 			holdA=-20;
 			if(b<600)
 				enemyReachTop=true;
@@ -789,6 +806,7 @@ System.out.println(Math.abs(x-a)+"   "+a+"    "+x);
 		
 		if(jump && x>=a-300) {
 			enemyEscape=true;
+			enemyAttack=false;
 			holdA=5;
 			holdB=0;
 			b=790;
