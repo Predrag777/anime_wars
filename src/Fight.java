@@ -257,7 +257,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					blockCount=0;
 				}
 				blockCount++;
-				//System.out.println("SS");
 			}
 			
 			if(myHelth<=0) {
@@ -271,6 +270,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.png";
 				}else {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Dead.png";
+					playSound("vegeta_won.wav",0);
 					t.stop();	
 					deadCount=0;
 				}
@@ -415,7 +415,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			
 			if(enemyReceivedSpecAttack) {
-				
+				enemyAttack=false;
 				if (enemyAttackedCount>=30) {
 					enemyReceivedSpecAttack = false;
 					enemyAttackCount=0;
@@ -430,6 +430,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			if(enemyHelth<=0) {
 				b=790;
+				enemyAttack=false;
 				if(deadCount<5) {
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead1.png";
 				}else if(deadCount<10) {
@@ -445,6 +446,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			
 			if(enemyEscape) {
+				enemyAttack=false;
 				if(enemyCount<10) {
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Escape1.png";
 				}else if(enemyCount<20) {
