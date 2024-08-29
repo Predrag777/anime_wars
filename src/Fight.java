@@ -157,14 +157,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch2.png";
 				}else if(attackCount<10) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch.png";
-				}else {
-					attack=false;
-					attackCount=0;
 					if(Math.abs(x-a)<200) {
 						enemyHelth-=5;
 						enemyPunched=true;
-						playSound("punch.wav",1);
+						playSound("punch.wav",0);
 					}
+				}else {
+					attack=false;
+					attackCount=0;
+					
 				}
 				attackCount++;
 			}
@@ -173,14 +174,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick1.png";
 				}else if(attackCount<20) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"MidKick.png";
-				}else {
-					midKick=false;
-					attackCount=0;
 					if(Math.abs(x-a)<=200) {
 						enemyHelth-=5;
 						enemyPunched=true;
-						playSound("kick1.wav",1);
+						playSound("kick1.wav",0);
 					}
+				}else {
+					midKick=false;
+					attackCount=0;
+					
 				}
 				attackCount++;
 			}
@@ -189,20 +191,21 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick1.png";
 				}else if(attackCount<20) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"HeightKick.png";
-				}else {
-					heightKick=false;
-					attackCount=0;
 					if(Math.abs(x-a)<=200) {
 						enemyHelth-=5;
 						enemyPunched=true;
-						playSound("kick1.wav",1);
+						playSound("punch2.wav",0);
 					}
+				}else {
+					heightKick=false;
+					attackCount=0;
+					
 				}
 				attackCount++;
 			}
 			if(specAttack) {
 				
-				if(count==20) {
+				if(count==30) {
 					faza2=true;
 				}else {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack.png";
@@ -417,6 +420,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}else if(deadCount<15) {
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead.png";
 				}else {
+					playSound("goku_won.wav",0);
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Dead.png";
 					t.stop();				deadCount=0;}
 				
@@ -546,7 +550,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			heightKick();
 		}
 		if(code==KeyEvent.VK_Q) {
-			
+			playSound("ulty.wav",0);
 			ulty=true;
 		}
 		if(code==KeyEvent.VK_F) {
