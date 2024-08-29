@@ -13,6 +13,7 @@ public class Menu {
     private JLabel txt;
 
     private int count;
+    private int level;
     private Fighter[] fighters;
     private Fighter fighter1;
     private Fighter fighter2;
@@ -47,6 +48,14 @@ public class Menu {
 
     public void setFighter2(Fighter fighter2) {
         this.fighter2 = fighter2;
+    }
+    
+    public void setLevel(int level) {
+    	this.level=level;
+    }
+    
+    public int getLevel() {
+    	return level;
     }
 
     public Fighter getFighter1() {
@@ -111,6 +120,28 @@ public class Menu {
         });
         btnNext.setBounds(39, 403, 117, 25);
         backgroundPanel.add(btnNext);
+        
+        JButton btnEasy = new JButton("Easy");
+        btnEasy.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		System.out.println("Easy");
+        		setLevel(1);
+        	}
+        });
+        JButton btnMedium = new JButton("Medium");  
+        btnMedium.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		System.out.println("Medium");
+        		setLevel(2);
+        	}
+        });
+        JButton btnHard = new JButton("Hard");
+        btnHard.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		System.out.println("Hard");
+        		setLevel(3);
+        	}
+        });
 
         JButton btnSubmit = new JButton("Fight");
         btnSubmit.addActionListener(new ActionListener() {
@@ -120,6 +151,7 @@ public class Menu {
 
                 c = rand.nextInt(fighters.length);
                 setFighter2(fighters[c]);
+                
                 String url = "images/";
                 ImageIcon img = new ImageIcon(url + fighters[c].getImg());
                 lblImg2.setIcon(img);
@@ -127,11 +159,11 @@ public class Menu {
                 File file = new File("Borbe.txt");
                 try {
                     PrintStream ps = new PrintStream(file);
-                    ps.println(fighter1.getName() + " VS " + fighter2.getName());
+                    ps.println(fighter1.getName() + " VS " + fighter2.getName()+" 1");
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                Crtaj a = new Crtaj(fighter1, fighter2);
+                Crtaj a = new Crtaj(fighter1, fighter2, getLevel());
                 JFrame p = new JFrame();
                 p.setSize(1000, 1000);
                 p.setVisible(true);
@@ -140,6 +172,13 @@ public class Menu {
             }
         });
         btnSubmit.setBounds(591, 403, 95, 25);
+        
+        btnEasy.setBounds(350, 350, 85, 25);
+        btnMedium.setBounds(350, 390, 85, 25);
+        btnHard.setBounds(350, 430, 85, 25);
+        backgroundPanel.add(btnEasy);
+        backgroundPanel.add(btnMedium);
+        backgroundPanel.add(btnHard);
         backgroundPanel.add(btnSubmit);
     }
     

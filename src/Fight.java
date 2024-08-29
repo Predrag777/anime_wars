@@ -21,7 +21,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 
 	Timer t=new Timer(100,this);
 	Fighter f1,f2;
-	public Crtaj(Fighter f1, Fighter f2) {
+	
+	int level=0;
+	
+	int speed=0;
+	int enemySpeed=15;
+	public Crtaj(Fighter f1, Fighter f2, int level) {
 		t.start();
 		setSize(1000,1000);
 		setVisible(true);
@@ -30,6 +35,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		setFocusTraversalKeysEnabled(false);
 		this.f1=f1;
 		this.f2=f2;
+		this.level=level;
+		if(level==1) {
+			enemySpeed=15;
+		}else if(level==2) {
+			enemySpeed=20;
+		}else {
+			enemySpeed=25;
+		}
+		System.out.println(level+"    "+enemySpeed);
 	}
 	
 	int myHelth=100;
@@ -49,7 +63,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int x=100,y=790,holdX=0,holdY=0;
 	int a=700,b=790,holdA=0,holdB=0;
-	int enemySpeed=15;
+	
 	
 	
 	String ulti_ss="";
@@ -98,6 +112,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	boolean faza1=false;
 	boolean faza2=false;
+	
 	
 	
 	boolean changeBase=true;
@@ -789,7 +804,7 @@ public class Fight {
 		// TODO Auto-generated method stub
 
 		Menu m=new Menu();
-		Crtaj c=new Crtaj(m.getFighter1(), m.getFighter2());
+		Crtaj c=new Crtaj(m.getFighter1(), m.getFighter2(), m.getLevel());
 		JFrame p=new JFrame();
 		p.setSize(1000,1000);
 		p.setVisible(true);
