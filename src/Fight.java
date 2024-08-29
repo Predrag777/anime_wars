@@ -97,6 +97,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean enemyJumpAttack=false;
 	boolean enemyBlock=false;
 	boolean selectNewAttack =true;
+	boolean chase=false;
 	
 	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
 	String enemyJumpAtacks[] = {"JumpAttack.png"};
@@ -276,8 +277,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Base2.png";
 			}
 			
-			if(enemyAttack) {
-				if(selectNewAttack) {selectNewAttack=false;
+			if(enemyAttack || chase) {//enemyNumberAttack, enemyCounterAttacks=0;
+				if(enemyCounterAttacks<enemyNumberAttack)
+					chase=true;
+				else {
+					enemyAttack=false;
+					chase=false;
+				}
+				if(selectNewAttack) {
+					selectNewAttack=false;
 					int randomNum = (int)(Math.random() * 3);
 					if(randomNum==0) {
 						enemyPunch=true;
@@ -307,7 +315,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyPunch=false;
 						enemyAttack=false;
 						enemyCounterAttacks++;
-						myHelth-=5;
+						if(x<a && a<x+200)
+							myHelth-=5;
 						selectNewAttack=true;
 					}
 					
@@ -325,7 +334,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyHeightKick=false;
 						enemyAttack=false;
 						enemyCounterAttacks++;
-						myHelth-=8;selectNewAttack=true;
+						if(x<a && a<x+200)
+							myHelth-=8;
+						
+						selectNewAttack=true;
 					}
 				}
 				if(enemyMidKick) {
@@ -340,7 +352,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyAttackCount=0;
 						enemyMidKick=false;
 						enemyAttack=false;
-						myHelth-=10;selectNewAttack=true;
+						if(x<a && a<x+200)
+							myHelth-=15;
+						
+						selectNewAttack=true;
 						
 					}
 				}
