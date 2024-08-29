@@ -22,10 +22,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	Timer t=new Timer(100,this);
 	Fighter f1,f2;
 	
-	int level=0;
+	int level=0, enemyAttackConstr;
 	
 	int speed=0;
 	int enemySpeed=15;
+	int enemyNumberAttack, enemyCounterAttacks=0;
 	public Crtaj(Fighter f1, Fighter f2, int level) {
 		t.start();
 		setSize(1000,1000);
@@ -38,12 +39,18 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		this.level=level;
 		if(level==1) {
 			enemySpeed=15;
+			enemyAttackConstr=20;
+			enemyNumberAttack=1;
 		}else if(level==2) {
 			enemySpeed=20;
+			enemyAttackConstr=15;
+			enemyNumberAttack=3;
 		}else {
 			enemySpeed=25;
+			enemyAttackConstr=8;
+			enemyNumberAttack=6;
 		}
-		System.out.println(level+"    "+enemySpeed);
+		System.out.println(level+"    "+enemySpeed+"    "+enemyAttackConstr);
 	}
 	
 	int myHelth=100;
@@ -286,9 +293,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			if(enemyAttack) {
 				if(enemyPunch) {
-					if(enemyAttackCount<5) {
+					if(enemyAttackCount<enemyAttackConstr/2) {//<5
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Punch1.png";
-					}else if(enemyAttackCount<10) {
+					}else if(enemyAttackCount<enemyAttackConstr) {//<10
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[0];
 						removeHealth=true;
 					}else {
@@ -296,14 +303,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyAttackCount=0;
 						enemyPunch=false;
 						enemyAttack=false;
+						enemyCounterAttacks++;
 					}
 					
 					
 				}
 				if(enemyHeightKick) {
-					if(enemyAttackCount<10) {
+					if(enemyAttackCount<enemyAttackConstr/2) {
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Kick.png";
-					}else if(enemyAttackCount<15) {
+					}else if(enemyAttackCount<enemyAttackConstr) {
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[2];
 						removeHealth=true;
 					}else {
@@ -311,15 +319,17 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyAttackCount=0;
 						enemyHeightKick=false;
 						enemyAttack=false;
+						enemyCounterAttacks++;
 					}
 				}
 				if(enemyMidKick) {
-					if(enemyAttackCount<10) {
+					if(enemyAttackCount<enemyAttackConstr/2) {
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Kick.png";
-					}else if(enemyAttackCount<15) {
+					}else if(enemyAttackCount<enemyAttackConstr) {
 						removeHealth=true;
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[1];
 					}else {
+						enemyCounterAttacks++;
 						removeHealth=false;
 						enemyAttackCount=0;
 						enemyMidKick=false;
@@ -529,7 +539,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if((a+holdA<=50 && holdA<0) || (a+holdA>=900 && holdA>0)) {
 			holdA=0;
 		}
-		
+		//System.out.println(holdA);
 		x+=holdX;y-=holdY;
 		a+=holdA;b+=holdB;
 		
@@ -612,7 +622,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		if((attack || midKick || heightKick) &&(x>=a-200)) {
-			System.out.println("PUNCHED");
+			//System.out.println("PUNCHED");
 			enemyPunched=true;
 		}
 		
@@ -623,6 +633,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(enemyAttackCount>20)
 			enemyAttackCount=0;
 		
+		
+		if(x<a && a>x+300)
+			enemyMove=true;
 		if(enemyMove) {
 			enemyChangeBase=enemyChangeBase ? false:true;
 			if(x<a && a>=x+borders) {
@@ -642,23 +655,30 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					punched=true;
 				}
 			}
-		
+			
+			//System.out.println(retreatRight+"   "+retreatLeft+"    X="+(x+borders)+" a="+a+"  ");
+			if(a>=800)
+				retreatRight=false;
 			if(x<a && retreatRight && a<800) {
 				holdA=enemySpeed*side;
-			}else if(x<a && a>800)
+			} 
+			else if(x<a && a>800)
 				retreatRight=false;
-			if(x>a && retreatLeft && a>100) {
+			else if(x>a && retreatLeft && a>100) {
 				holdA=-enemySpeed*side;
-			}else if(a<100)
+			}
+			else if(a<100)
 				retreatLeft = false;
 			enemyAttack=false;
 			enemyAttackCount=0;
+			
 		}else {
 			enemyChangeBase=enemyChangeBase ? false:true;
 			if((a>=800 || a<x+250) && !enemyAttack)
 				enemyMove=true;
 			
 		}
+		
 		
 		if(enemyReceivedSpecAttack) {
 			holdA=15;
@@ -673,17 +693,21 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyAttack=true;
 			enemyMove=false;
 			holdA=0;
-			if(enemyCount2<=3 && removeHealth) {
+			if(removeHealth) {
 				myHelth-=5;
 				holdX=-10;
-				enemyCount2++;
 				punched=true;
 			}
 			
-			if(enemyCount2>=3) {
+			//enemyNumberAttack, enemyCounterAttacks=0;
+			if(enemyCounterAttacks>=enemyNumberAttack) {
 				holdX=-80;
 				enemyCount2=0;
 			}
+			//System.out.println("SS   "+enemyCount2);
+		}else {
+			enemyCounterAttacks=0;
+			enemyMove=true;
 		}
 		
 		if(x<a && specX>=a-600 && specX<=a-100 && specX>0) {// || b<=790
