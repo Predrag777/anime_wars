@@ -447,13 +447,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			if(enemyEscape) {
 				enemyAttack=false;
-				if(enemyCount<10) {
+				if(enemyCount<3) {
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Escape1.png";
-				}else if(enemyCount<20) {
+				}else if(enemyCount<6) {
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Escape2.png";
-				}else if(enemyCount<30) {
+				}else if(enemyCount<9) {
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Escape3.png";
-				}else if(enemyCount<35){
+				}else if(enemyCount<13){
 					waff = waff.substring(0, waff.indexOf('/') + 1) + f2.getName().toLowerCase() + "Escape4.png";
 					enemyCount=-1;
 					enemyEscape=false;
@@ -624,7 +624,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		
-		System.out.println(enemyAttack+"    "+enemyMove);
+		System.out.println(holdA);
 		if((a+holdA<=50 && holdA<0) || (a+holdA>=900 && holdA>0)) {
 			holdA=0;
 		}
@@ -724,7 +724,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		if(x<a && (a>x+300))
 			enemyMove=true;
-		if(enemyMove) {
+		if(enemyMove && !enemyEscape) {
 			enemyChangeBase=enemyChangeBase ? false:true;
 			if(x<a && a>=x+borders) {
 				holdA=-enemySpeed*side;////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -809,7 +809,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(jump && x>=a-300) {
 			enemyEscape=true;
 			enemyAttack=false;
-			holdA=5;
+			holdA=20*side;
 			holdB=0;
 			b=790;
 			enemyMove=false;
