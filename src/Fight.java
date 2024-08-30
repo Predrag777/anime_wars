@@ -268,7 +268,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			if(double_back_gate) {
 				double_back_counter++;
-				if(double_back_counter>1) {
+				if(double_back_counter>3) {
 					double_back_gate=false;
 					double_back_counter=0;
 				}
@@ -618,18 +618,16 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				right();
 				changeBase=changeBase ? false:true;
 			}
-			if(code==KeyEvent.VK_LEFT && !double_back) {
+			if(code==KeyEvent.VK_LEFT && !double_back) {//////////////////////////////////////////
 				double_back_gate=true;
 				teleport_c++;
-			//	System.out.println("Prvi put "+double_back_counter+"   "+teleport_c);
-				if(double_back_counter<1 && teleport_c%5==0 && myKi>50) {
+				if(double_back_counter>1 && double_back_counter<3 && teleport_c%5==0 && myKi>50) {
 					double_back=true;
-					//System.out.println("SPEC");
 				}
 				changeBase=changeBase ? false:true;
 				
 				left();
-			}
+			}////////////////////////////////////////////////////////////////////////
 			if(code==KeyEvent.VK_E && !double_back) {
 				slide();
 			}
