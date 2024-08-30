@@ -267,11 +267,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				blockCount++;
 			}
 			if(double_back_gate) {
-				double_back_counter++;
+				
 				if(double_back_counter>3) {
 					double_back_gate=false;
 					double_back_counter=0;
 				}
+				double_back_counter++;
 			}
 			
 			if(double_back) {
