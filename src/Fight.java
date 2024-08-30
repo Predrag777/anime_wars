@@ -160,6 +160,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(jump) {
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Jump.png";
 			}
+			
+			
 			if(attack && !jump) {
 				if(attackCount<5) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch2.png";
@@ -186,7 +188,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					if(Math.abs(x-a)<=200) {
 						enemyHelth-=5;
 						enemyPunched=true;
-						playSound("kick1.wav",0);
+						playSound("punch.wav",0);
 						attackCount=30;
 					}
 				}else {
@@ -393,7 +395,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 							myHelth-=8;
 							punched=true;
 							enemyAttackCount=30;
-							playSound("kick1.wav",0);
+							playSound("punch2.wav",0);
 						}
 					}else {
 						removeHealth=false;
@@ -586,6 +588,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		// TODO Auto-generated method stub
 		int code=e.getKeyCode();
 		if(code==KeyEvent.VK_UP && y==790 && !double_back) {
+			playSound("jump.wav", 0);
 			jump();
 		}
 		if(code==KeyEvent.VK_SPACE && !double_back) {//Popraviti
@@ -773,7 +776,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(enemyJump && x>=a-350 && y>=b-120) {
 				enemyJumpAttack=true;
 				if(x>=a-350 && !block) {
-					myHelth-=10;
+					//myHelth-=10;
 					punched=true;
 				}
 			}
@@ -815,7 +818,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 		//enemy Attack controls
-		if((x<a && a<=x+200 && !enemyReceivedSpecAttack && !enemyPunched && !block && !enemyEscape)) {
+		if((x<a && a<=x+200 && !enemyReceivedSpecAttack && !enemyPunched && !enemyEscape)) {
 			//System.out.println(x+"  ATTACK  "+a+ "    "+enemyAttackCount);
 			enemyAttack=true;
 			enemyMove=false;
