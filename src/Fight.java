@@ -76,7 +76,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int x=100,y=790,holdX=0,holdY=0;
 	int a=700,b=790,holdA=0,holdB=0;
-	
+	int teleport_c=1;
 	
 	
 	String ulti_ss="";
@@ -124,6 +124,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean reachTop=false;
 	boolean block=false;
 	boolean removeHealth=false;
+	boolean double_back=false;
+	boolean double_back_gate=false;
+	int double_back_counter=0;
+	int teleport_counter=0;
+	float myKi=100.0f;
 	
 	boolean faza1=false;
 	boolean faza2=false;
@@ -141,6 +146,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		BufferedImage image;
 		BufferedImage wave;
 		
+		if(myKi<100) {
+			myKi+=1;
+		}
 		try {
 			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+ulti_ss+"Base.png";
 			String s="";
@@ -257,6 +265,24 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					blockCount=0;
 				}
 				blockCount++;
+			}
+			if(double_back_gate) {
+				double_back_counter++;
+				if(double_back_counter>1) {
+					double_back_gate=false;
+					double_back_counter=0;
+				}
+			}
+			
+			if(double_back) {
+				playSound("teleport.wav",0);
+				x-=150;
+				double_back=false;
+				double_back_gate=false;
+				double_back_counter=0;
+				myKi-=50;
+				
+				
 			}
 			
 			if(myHelth<=0) {
@@ -484,8 +510,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			g.setColor(Color.RED);
 		    Font font = new Font("Arial", Font.BOLD, 30);
 		    g.setFont(font);
-		    g.drawString(String.valueOf(myHelth), 10, 60); 
+		    g.drawString(String.valueOf(myHelth), 10, 60);  
 		    g.drawString(String.valueOf(enemyHelth), getWidth() - 60, 60);
+		    
+		    g.setColor(Color.BLUE);
+		    g.drawString(String.valueOf(myKi), 10, 150); 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -508,7 +537,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	public void right() {
 		if(!jump) {
-			holdX=5;
+			holdX=15;
 			holdY=0;
 			move=true;
 		}
@@ -516,7 +545,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	public void left() {
 		if(!jump) {
-			holdX=-5;
+			holdX=-15;
 			holdY=0;
 			move=false;
 		}
@@ -555,45 +584,53 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int code=e.getKeyCode();
-		if(code==KeyEvent.VK_UP && y==790) {
+		if(code==KeyEvent.VK_UP && y==790 && !double_back) {
 			jump();
 		}
-		if(code==KeyEvent.VK_SPACE) {//Popraviti
+		if(code==KeyEvent.VK_SPACE && !double_back) {//Popraviti
 			fly();
 		}
-		if(code==KeyEvent.VK_A && !punched) {
+		if(code==KeyEvent.VK_A && !punched && !double_back) {
 			
 			punch();
 		}
-		if(code==KeyEvent.VK_D && !punched) {
+		if(code==KeyEvent.VK_D && !punched && !double_back) {
 			midKick();
 		}
-		if(code==KeyEvent.VK_W && !punched) {
+		if(code==KeyEvent.VK_W && !punched && !double_back) {
 			heightKick();
 		}
-		if(code==KeyEvent.VK_Q) {
+		if(code==KeyEvent.VK_Q && !double_back) {
 			playSound("ulty.wav",0);
 			ulty=true;
 		}
-		if(code==KeyEvent.VK_F) {
+		if(code==KeyEvent.VK_F && !double_back) {
 			block=true;
 		}
 		if(y==790) {
-			if(code==KeyEvent.VK_S) {
+			if(code==KeyEvent.VK_S && !double_back) {
 				playSound("kamehamehaa.wav",0);
 				specAttack();
 				//startAttackTime=System.currentTimeMillis();
 			}
 			
-			if(code==KeyEvent.VK_RIGHT) {
+			if(code==KeyEvent.VK_RIGHT && !double_back) {
 				right();
 				changeBase=changeBase ? false:true;
 			}
-			if(code==KeyEvent.VK_LEFT) {
+			if(code==KeyEvent.VK_LEFT && !double_back) {
+				double_back_gate=true;
+				teleport_c++;
+			//	System.out.println("Prvi put "+double_back_counter+"   "+teleport_c);
+				if(double_back_counter<1 && teleport_c%5==0 && myKi>50) {
+					double_back=true;
+					//System.out.println("SPEC");
+				}
 				changeBase=changeBase ? false:true;
+				
 				left();
 			}
-			if(code==KeyEvent.VK_E) {
+			if(code==KeyEvent.VK_E && !double_back) {
 				slide();
 			}
 		}
@@ -626,7 +663,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		
-		System.out.println(holdA);
+		//System.out.println(holdA);
 		if((a+holdA<=50 && holdA<0) || (a+holdA>=900 && holdA>0)) {
 			holdA=0;
 		}
