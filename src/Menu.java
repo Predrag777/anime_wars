@@ -1,9 +1,16 @@
 import java.awt.*;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Random;
 
@@ -39,8 +46,23 @@ public class Menu {
         this.count = 0;
         this.fighters = t.getFighters();
         this.log = false;
+        playSound("ZvucniEfekti/intro.wav",100);
         initialize();
     }
+    
+    public static void playSound(String soundFile, int loopCount) {
+	    try {
+	        File soundPath = new File(soundFile);
+	        AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundPath);
+	        Clip clip = AudioSystem.getClip();
+
+	        clip.open(audioStream);
+	        clip.loop(loopCount);  // Ponavljanje zvuka
+	        clip.start();
+	    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+	        e.printStackTrace();
+	    }
+	}
 
     public void setFighter1(Fighter fighter1) {
         this.fighter1 = fighter1;
@@ -73,7 +95,7 @@ public class Menu {
         frame.getContentPane().setLayout(null);
 
         // Kreiranje panela za pozadinu
-        BackgroundPanel backgroundPanel = new BackgroundPanel("background/stage1.jpg"); // Proverite da li je putanja ispravna
+        BackgroundPanel backgroundPanel = new BackgroundPanel("background/backg.jpeg"); // Proverite da li je putanja ispravna
         backgroundPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         frame.getContentPane().add(backgroundPanel);
         backgroundPanel.setLayout(null);
