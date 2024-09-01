@@ -29,7 +29,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	int level=0, enemyAttackConstr;
 	
-	int speed=0;
+	int speed=0;double pravacX=1, pravacY=1;
 	double target=0.0;
 	int enemySpeed=15;
 	int enemyNumberAttack, enemyCounterAttacks=0;
@@ -109,7 +109,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
 	String enemyJumpAtacks[] = {"JumpAttack.png"};
 	
-	int specX=0,specY=0,holdSpec;
+	int specX=0,specY=0,holdSpec, holdSpecY;
 	
 	
 	boolean jump=false;
@@ -227,7 +227,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				if(count==30) {
 					specX=x;specY=y;
 					target=izracunajRastojanje(specX, specY, a, b);
-					
+					if(fly) {
+						pravacX = (a - specX) / target;
+			            pravacY = (b - specY) / target;
+					}
 					faza2=true;
 				}else {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack.png";
@@ -332,7 +335,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			if(faza2) {
 				wave=ImageIO.read(new File("folder1/wave.png"));			
-				g.drawImage(wave,specX+200, specY+100,   100*side,100,null);////Projektil
+				g.drawImage(wave,specX+200, specY,   100*side,100,null);////Projektil
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -581,6 +584,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void specAttack() {
 		specAttack=true;
 		holdSpec=30;
+		holdSpecY=0;
+		if(fly)
+			holdSpecY=100;
 	}
 	public void slide() {
 		slide=true;
@@ -763,11 +769,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 
 		//Specijalni napad
 		if(specAttack && faza2) {
-			double pravacX = (a - specX) / target;
-            double pravacY = (b - specY) / target;
-			specX+=holdSpec*pravacX*side;
-			specY+=holdSpec*pravacX;
-			if(specX>=a-260 && b>700) {
+			
+			specX+=holdSpec*side;
+			specY+=holdSpecY*pravacY;
+			if(specX>=a-260 && b>700 && specY>=750) {
 				enemyHelth-=40;
 				enemyJumpAttack=enemyJump=false;
 				
