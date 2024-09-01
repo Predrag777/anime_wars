@@ -30,6 +30,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int level=0, enemyAttackConstr;
 	
 	int speed=0;
+	double target=0.0;
 	int enemySpeed=15;
 	int enemyNumberAttack, enemyCounterAttacks=0;
 	public Crtaj(Fighter f1, Fighter f2, int level) {
@@ -108,7 +109,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
 	String enemyJumpAtacks[] = {"JumpAttack.png"};
 	
-	int specX=0,specY=700,holdSpec;
+	int specX=0,specY=0,holdSpec;
 	
 	
 	boolean jump=false;
@@ -224,6 +225,9 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			if(specAttack) {
 				
 				if(count==30) {
+					specX=x;specY=y;
+					target=izracunajRastojanje(specX, specY, a, b);
+					
 					faza2=true;
 				}else {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack.png";
@@ -325,9 +329,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		    g.drawImage(img,0,0,1000,1000,null);
 			
 			g.drawImage(image,x+100*side*-1,y,200*side,200,null);
+			
 			if(faza2) {
-				wave=ImageIO.read(new File("folder1/wave.png"));
-				g.drawImage(wave, specX+200, specY+100,100*side,100,null);
+				wave=ImageIO.read(new File("folder1/wave.png"));			
+				g.drawImage(wave,specX+200, specY+100,   100*side,100,null);////Projektil
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -758,7 +763,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 
 		//Specijalni napad
 		if(specAttack && faza2) {
-			specX+=holdSpec*side;
+			double pravacX = (a - specX) / target;
+            double pravacY = (b - specY) / target;
+			specX+=holdSpec*pravacX*side;
+			specY+=holdSpec*pravacX;
 			if(specX>=a-260 && b>700) {
 				enemyHelth-=40;
 				enemyJumpAttack=enemyJump=false;
@@ -899,6 +907,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		
 	}
+	
+	
+	 public static double izracunajRastojanje(int x1, int y1, int x2, int y2) {
+	        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	 }
 	
 }
 
