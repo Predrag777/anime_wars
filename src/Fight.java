@@ -65,7 +65,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int borders=190;
 	
 	
-	int count=0;
+	int count=0, groundedCount=0;
 	int enemyCount=0, enemyCount2=0;
 	int deadCount=0;
 	int blockCount=0;
@@ -105,6 +105,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean enemyBlock=false;
 	boolean selectNewAttack =true;
 	boolean chase=false;
+	boolean grounded=false;
 	
 	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
 	String enemyJumpAtacks[] = {"JumpAttack.png"};
@@ -115,6 +116,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean jump=false;
 	boolean fly=false;
 	int flyCounter=0;
+	int fallDownCounter=0;
 	boolean attack=false;
 	boolean midKick=false;
 	boolean heightKick=false;
@@ -299,6 +301,17 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				myKi-=50;
 				
 				
+			}
+			
+			if(grounded) {
+				if(groundedCount<1)
+					playSound("ZvucniEfekti/landing.wav",0);
+				else if(groundedCount<10) {
+					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"Grounded.png";
+				}else
+					grounded=false;
+				
+				groundedCount++;
 			}
 			
 			if(myHelth<=0) {
@@ -585,7 +598,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		specAttack=true;
 		holdSpec=30;
 		holdSpecY=0;
-		if(fly)
+		if(fly) 
 			holdSpecY=100;
 	}
 	public void slide() {
@@ -596,6 +609,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void keyReleased(KeyEvent arg0) {
 		if(!jump || fly) {
 			holdX=0;holdY=0;
+			fallDownCounter=0;
 		}
 	}
 
@@ -614,20 +628,34 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			flyCounter++;
 			if(jump && flyCounter==2 && myKi>30) {
 				fly=true;
+				playSound("ZvucniEfekti/fly.wav",0);
 				jump=false;
+				flyCounter=0;
 				holdX=0;holdY=0;
 				System.out.println("FLY");
 			}
 			
-			if(fly) {
-				holdY=10;
-			}
 			
+			if(fly)
+				holdY=10;
 			
 			if(y==790) {
 				playSound("ZvucniEfekti/jump.wav", 0);
 				jump();
 			}
+		}
+		
+		if(code==KeyEvent.VK_DOWN && !punched && !jump && fly) {
+			if(fly) {
+				fallDownCounter++;
+				if(fallDownCounter%5==0 && myKi>25) {
+					playSound("ZvucniEfekti/teleport.wav",0);
+					myKi-=20;
+					y=790;
+					fallDownCounter=0;
+				}
+			}
+			holdY=-10;
 		}
 
 		if(code==KeyEvent.VK_A && !punched && !double_back) {
@@ -742,6 +770,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			holdY=-25;
 			holdX=-10;
 			if(y>780) {
+				flyCounter=0;
 				y=790;
 				reachTop=false;
 				jump=false;
@@ -792,10 +821,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		
-		if(y>=770 && fly) {
-			y=790;
-			flyCounter=0;
-			fly=false;
+		if(y>=730 && fly) {
+			holdY=-10;
+			if(y>=770) {
+				flyCounter=0;
+				fly=false;
+				y=770;
+			}
+			grounded=true;
+			
 		}
 		
 		
