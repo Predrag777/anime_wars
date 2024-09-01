@@ -161,7 +161,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Base2.png";
 			}
 			
-			if(jump) {
+			if(jump || fly) {
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Jump.png";
 			}
 			
@@ -546,7 +546,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	public void right() {
-		if(!jump && !fly) {
+		if(!jump) {
 			holdX=15;
 			holdY=0;
 			move=true;
@@ -555,17 +555,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	public void left() {
-		if(!jump || fly) {
+		if(!jump) {
 			holdX=-15;
 			holdY=0;
 			move=false;
 		}
-		if(fly) {
-			System.out.println("SS");
-			holdFlyX=-15;
-			holdFlyX=0;
-			move=false;
-		}
+
 	}
 	
 	public void punch() {
@@ -588,7 +583,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		if(!jump) {
+		if(!jump || fly) {
 			holdX=0;holdY=0;
 		}
 	}
@@ -608,8 +603,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			flyCounter++;
 			if(jump && flyCounter==2 && myKi>30) {
 				fly=true;
+				jump=false;
 				holdX=0;holdY=0;
 				System.out.println("FLY");
+			}
+			
+			if(fly) {
+				holdY=10;
 			}
 			
 			
@@ -645,6 +645,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			
 			if(code==KeyEvent.VK_RIGHT && !double_back) {
 				right();
+				
 				changeBase=changeBase ? false:true;
 			}
 			if(code==KeyEvent.VK_LEFT && !double_back) {//////////////////////////////////////////
@@ -726,7 +727,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 		}
 		
-		if(reachTop && !move) {
+		if(reachTop && !move && !fly) {
 			holdY=-25;
 			holdX=-10;
 			if(y>780) {
