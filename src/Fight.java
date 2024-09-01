@@ -402,7 +402,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					}else if(enemyAttackCount<enemyAttackConstr) {//<10
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[0];
 						if(x<a && a<x+200) {
-							myHelth-=5;
+							if(block)
+								myHelth-=3;
+							else
+								myHelth-=5;
 							playSound("ZvucniEfekti/punch.wav",0);
 							punched=true;
 							enemyAttackCount=30;
@@ -427,7 +430,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[2];
 						//removeHealth=true;
 						if(x<a && a<x+200) {
-							myHelth-=8;
+							if(block)
+								myHelth-=4;
+							else
+								myHelth-=8;
 							punched=true;
 							enemyAttackCount=30;
 							playSound("ZvucniEfekti/punch2.wav",0);
@@ -450,7 +456,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						//removeHealth=true;
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+enemyBaseAttacks[1];
 						if(x<a && a<x+200 && b>=y) {
-							myHelth-=15;
+							if(block)
+								myHelth-=10;
+							else
+								myHelth-=15;
 							punched=true;
 							enemyAttackCount=30;
 							playSound("ZvucniEfekti/punch2.wav",0);
@@ -776,8 +785,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		x+=holdX+holdFlyX;y-=holdY+holdFlyY;
-		//a+=holdA;
-		b+=holdB;
+		a+=holdA;b+=holdB;
 		
 		Timer time=new Timer(1000, this);
 		if(a<x+100) {
@@ -960,7 +968,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		//enemy Attack controls
 		if((x<a && a<=x+200 && !enemyReceivedSpecAttack && !enemyPunched && !enemyEscape)) {
-			//System.out.println(x+"  ATTACK  "+a+ "    "+enemyAttackCount);
 			enemyAttack=true;
 			enemyMove=false;
 			holdA=0;
@@ -1002,10 +1009,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			holdB=-15;
 		}else if(b<y-30) {
 			holdB=15;
-		}else {
-			holdB=0;
 		}
-		if(!fly && b>730) {
+		if(!fly && b>730 && !enemyJump) {
 			b=790;
 			enemyFly=false;
 		}
@@ -1013,8 +1018,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(enemyKi<50 && b==790) {
 			enemyFly=false;
 		}
-		if(enemyKi<20 && enemyFly) {
-			System.out.println("SS");
+		if(enemyKi<20 && enemyFly && !enemyJump) {
 			holdB=50;
 			if(b>790) {
 				b=790;
