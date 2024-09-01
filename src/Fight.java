@@ -776,7 +776,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		x+=holdX+holdFlyX;y-=holdY+holdFlyY;
-		a+=holdA;b+=holdB;
+		//a+=holdA;
+		b+=holdB;
 		
 		Timer time=new Timer(1000, this);
 		if(a<x+100) {
