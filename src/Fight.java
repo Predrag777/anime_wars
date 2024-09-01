@@ -608,6 +608,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			flyCounter++;
 			if(jump && flyCounter==2 && myKi>30) {
 				fly=true;
+				holdX=0;holdY=0;
 				System.out.println("FLY");
 			}
 			
@@ -707,11 +708,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		if(y<=600)
 			reachTop=true;
 		//Skok
-		if(jump && !reachTop && y>=600 && move) {
+		if(jump && !reachTop && y>=600 && move && !fly) {
 			holdX=10;
 			holdY=25;
 		}
-		if(jump && !reachTop && y>=600 && !move) {
+		if(jump && !reachTop && y>=600 && !move && !fly) {
 			holdX=-10;
 			holdY=25;
 		}
@@ -725,7 +726,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 		}
 		
-		if(reachTop && y<790 && !move) {
+		if(reachTop && !move) {
 			holdY=-25;
 			holdX=-10;
 			if(y>780) {
@@ -774,6 +775,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			specAttack=false;
 			specX=0;
 			faza2=false;
+		}
+		
+		
+		if(y>=770 && fly) {
+			y=790;
+			flyCounter=0;
+			fly=false;
 		}
 		
 		
@@ -883,10 +891,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			b=790;
 		}
 		
-		if(y>=770 && fly) {
-			y=790;
-			fly=false;
-		}
+		
 
 		
 		
