@@ -130,19 +130,19 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int double_back_counter=0;
 	int teleport_counter=0;
 	float myKi=100.0f;
-	
-	
+		
+		
 	boolean faza1=false;
 	boolean faza2=false;
-	
-	
-	
+		
+		
+		
 	boolean changeBase=true;
-	
+		
 	boolean slide=false;
-	
+		
 	int side=1;
-	
+		
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		BufferedImage image;
@@ -154,7 +154,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		try {
 			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+ulti_ss+"Base.png";
 			String waff=f2.getFile()+"/"+f2.getName().toLowerCase()+"Base.png";
-
+        
 			String s="";
 			
 			if(!changeBase) {
@@ -551,19 +551,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			holdY=0;
 			move=true;
 		}
-		if(fly) {
-			holdFlyX=15;
-			holdFlyX=0;
-		}
+		
 	}
 	
 	public void left() {
-		if(!jump) {
+		if(!jump || fly) {
 			holdX=-15;
 			holdY=0;
 			move=false;
 		}
-		System.out.println(fly);
 		if(fly) {
 			System.out.println("SS");
 			holdFlyX=-15;
@@ -608,7 +604,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		// TODO Auto-generated method stub
 		int code=e.getKeyCode();
 		if(code==KeyEvent.VK_UP && !double_back) {
-			System.out.println(flyCounter);
+			//System.out.println(flyCounter);
 			flyCounter++;
 			if(jump && flyCounter==2 && myKi>30) {
 				fly=true;
@@ -685,9 +681,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
-		if(fly) {
-			holdX=0;holdY=0;
-		}
 		
 		
 		
@@ -888,6 +881,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 		if(!enemyJump && !enemyReceivedSpecAttack) {
 			b=790;
+		}
+		
+		if(y>=770 && fly) {
+			y=790;
+			fly=false;
 		}
 
 		
