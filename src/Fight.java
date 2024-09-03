@@ -133,7 +133,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean double_back_gate=false;
 	int double_back_counter=0;
 	int teleport_counter=0;
-	float myKi=100.0f;
+	float myKi=1000000.0f;
 		
 		
 	boolean faza1=false;
@@ -764,279 +764,282 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		repaint();
-		
-		
-		if((x+holdX<=50 && holdX<0) || (x+holdX>=900 && holdX>0)) {
-			holdX=0;
-		}
-		
-		if(fly && myKi<20) {
-			fly=false;
-		}
-		
-		
-		
-		//System.out.println(holdA);
-		if((a+holdA<=50 && holdA<0) || (a+holdA>=900 && holdA>0)) {
-			holdA=0;
-		}
-		
-		x+=holdX+holdFlyX;y-=holdY+holdFlyY;
-		a+=holdA;b+=holdB;
-		
-		Timer time=new Timer(1000, this);
-		if(a<x+100) {
-			side=-1;
-			
-		}else
-			side=1;
-		
-		if(y<=600)
-			reachTop=true;
-		//Skok
-		if(jump && !reachTop && y>=600 && move && !fly) {
-			holdX=10;
-			holdY=25;
-		}
-		if(jump && !reachTop && y>=600 && !move && !fly) {
-			holdX=-10;
-			holdY=25;
-		}
-		if(reachTop && y<790 && move && !fly) {
-			holdY=-25;
-			holdX=10;
-			if(y>=780) {
-				y=790;
-				jump=false;
-				reachTop=false;
-			}
-		}
-		
-		if(reachTop && !move && !fly) {
-			holdY=-25;
-			holdX=-10;
-			if(y>780) {
-				flyCounter=0;
-				y=790;
-				reachTop=false;
-				jump=false;
-			}
-		}
-		
-		
-		
-		//Slide
-		if(slide) {
-			x+=10*side;
-			count++;
-			if(count==15) {
-				slide=false;
-				count=0;
-				time.stop();
-			}
-			time.start();
-			holdX=0;holdY=0;
-		}
-		
-		//Prizemljenje
-		if(y>=790) {
-			y=790;
-			holdX=0;		
-		}
-
-		//Specijalni napad
-		if(specAttack && faza2) {
-			
-			specX+=holdSpec*side;
-			specY+=holdSpecY*pravacY;
-			if(specX>=a-260 && b>700 && specY>=750) {
-				enemyHelth-=40;
-				enemyJumpAttack=enemyJump=false;
-				
-				enemyReceivedSpecAttack=true;
-				specAttack=false;
-				specX=0;
-				faza2=false;
-			}
-			holdX=holdY=0;
-		}
-		if(specX>=1000) {
-			holdX=holdY=holdSpec=0;
-			specAttack=false;
-			specX=0;
-			faza2=false;
-		}
-		
-		
-		if(y>=730 && fly) {
-			
-			holdY=-10;
-			if(y>=770) {
-				flyCounter=0;
-				fly=false;
-				y=770;
-			}
-			grounded=true;
-			
-		}
-		
-		
-		
-		/////////////AI Fighter 2//////////////////////////////////////////////////////////////////////////////////////////////
-		
-		if(enemyAttackCount>20)
-			enemyAttackCount=0;
-		
-		
-		if(x<a && (a>x+300))
-			enemyMove=true;
-		if(enemyMove && !enemyEscape) {
-			enemyChangeBase=enemyChangeBase ? false:true;
-			if(x<a && a>=x+borders) {
-				holdA=-enemySpeed*side;////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			}else if(x<a && a<=x+borders){
-				retreatRight=true;
-			}else if(x>a && a<=x-borders) {
-				holdA=enemySpeed*side;
-			}else if(x>a && a>=x-borders){
-				retreatLeft=true;
-			}
-			
-			if(enemyJump && x>=a-350 && y>=b-120) {
-				enemyJumpAttack=true;
-				if(x>=a-350 && !block) {
-					//myHelth-=10;
-					punched=true;
-				}
-			}
-			
-			if(a>=800)
-				retreatRight=false;
-			if(x<a && retreatRight && a<800) {
-				holdA=enemySpeed*side;
-			} 
-			else if(x<a && a>800)
-				retreatRight=false;
-			else if(x>a && retreatLeft && a>100) {
-				holdA=-enemySpeed*side;
-			}
-			else if(a<100)
-				retreatLeft = false;
-			enemyAttack=false;
-			enemyAttackCount=0;
-			
-		}else {
-			enemyChangeBase=enemyChangeBase ? false:true;
-			if((a>=800 || a<x+250) && !enemyAttack)
-				enemyMove=true;
-			
-		}
-		
-		if(fly && !enemyBarage && enemyKi>50) {
-			enemyFly=true;
-			if(b>y-50 && b<y+100 && enemySpecX<=0) {
-				enemySpecX=a;
-				enemySpecY=b;
-				enemyBarage=true;
-			}
-		}
-		
-		
-		if(enemyBarage || enemySpecX>0) {
-			enemySpecX-=50*side;
-		}
-		if(!fly && b>770) {
-			enemyFly=false;
-			b=790;
-		}
-		
-		
-		if(enemyReceivedSpecAttack) {
-			holdA=15;
-			enemyAttack=false;
-			if(b>785)
-				holdB=-5;
-			else
-				holdB=5;
-		}/*else
-			holdB=0;
-		*/
-		
-		
-		//enemy Attack controls
-		if((x<a && a<=x+200 && !enemyReceivedSpecAttack && !enemyPunched && !enemyEscape)) {
-			enemyAttack=true;
-			enemyMove=false;
-			holdA=0;
-		}
-		
-		if(x<a && specX>=a-600 && specX<=a-100 && specX>0 && !enemyReceivedSpecAttack && !enemyPunched) {// || b<=790
-			enemyJump=true;
-			enemyAttack=false;
-			holdA=-20;
-			if(b<600)
-				enemyReachTop=true;
-			if(!enemyReachTop) {
-				holdB=-25;
-			}else
-				holdB=10;
-			
-			if(b<790 && enemyReachTop) {
-				holdB=0;
-				enemyJump=false;
-				enemyReachTop=false;
-			}
-		}
-		
-		if(jump && x>=a-300) {
-			enemyEscape=true;
-			enemyAttack=false;
-			holdA=20*side;
-			holdB=0;
-			b=790;
-			enemyMove=false;
-			
-		}
-		
-		if(!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
-			b=790;
-		}
-		
-		if(b>y+30) {
-			holdB=-15;
-		}else if(b<y-30) {
-			holdB=15;
-		}
-		if(!fly && b>730 && !enemyJump) {
-			b=790;
-			enemyFly=false;
-		}
-		
-		if(enemyKi<50 && b==790) {
-			enemyFly=false;
-		}
-		if(enemyKi<20 && enemyFly && !enemyJump) {
-			holdB=50;
-			if(b>790) {
-				b=790;
-			    enemyFly=false;	
-			}
-		}
-		
-		
-		
+	public void actionPerformed(ActionEvent event) {
+	    repaint();
+	    handleBoundaryCollision();
+	    handleFlyCondition();
+	    handleMovement();
+	    handleJump();
+	    handleSlide();
+	    handleGrounding();
+	    handleSpecialAttack();
+	    handleEnemyAI();
 	}
-	
-	
-	 public static double izracunajRastojanje(int x1, int y1, int x2, int y2) {
-	        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-	 }
-	
-}
 
+	private void handleBoundaryCollision() {
+	    if ((x + holdX <= 50 && holdX < 0) || (x + holdX >= 900 && holdX > 0)) {
+	        holdX = 0;
+	    }
+	    if ((a + holdA <= 50 && holdA < 0) || (a + holdA >= 900 && holdA > 0)) {
+	        holdA = 0;
+	    }
+	}
+
+	private void handleFlyCondition() {
+	    if (fly && myKi < 20) {
+	        fly = false;
+	    }
+	}
+
+	private void handleMovement() {
+	    x += holdX + holdFlyX;
+	    y -= holdY + holdFlyY;
+	    b += holdB;
+
+	    if (a < x + 100) {
+	        side = -1;
+	    } else {
+	        side = 1;
+	    }
+
+	    if (y <= 600) {
+	        reachTop = true;
+	    }
+	}
+
+	private void handleJump() {
+	    if (jump && !reachTop && y >= 600 && move && !fly) {
+	        holdX = 10;
+	        holdY = 25;
+	    } else if (jump && !reachTop && y >= 600 && !move && !fly) {
+	        holdX = -10;
+	        holdY = 25;
+	    } else if (reachTop && y < 790 && move && !fly) {
+	        holdY = -25;
+	        holdX = 10;
+	        if (y >= 780) {
+	            y = 790;
+	            jump = false;
+	            reachTop = false;
+	        }
+	    } else if (reachTop && !move && !fly) {
+	        holdY = -25;
+	        holdX = -10;
+	        if (y > 780) {
+	            flyCounter = 0;
+	            y = 790;
+	            reachTop = false;
+	            jump = false;
+	        }
+	    }
+	}
+
+	private void handleSlide() {
+	    if (slide) {
+	        x += 10 * side;
+	        count++;
+	        if (count == 15) {
+	            slide = false;
+	            count = 0;
+	        }
+	        holdX = 0;
+	        holdY = 0;
+	    }
+	}
+
+	private void handleGrounding() {
+	    if (y >= 790) {
+	        y = 790;
+	        holdX = 0;
+	    }
+	    if (y >= 730 && fly) {
+	        holdY = -10;
+	        if (y >= 770) {
+	            flyCounter = 0;
+	            fly = false;
+	            y = 770;
+	        }
+	        grounded = true;
+	    }
+	}
+
+	private void handleSpecialAttack() {
+	    if (specAttack && faza2) {
+	        specX += holdSpec * side;
+	        specY += holdSpecY * pravacY;
+	        if (specX >= a - 260 && b > 700 && specY >= 750) {
+	            enemyHelth -= 40;
+	            enemyJumpAttack = enemyJump = false;
+	            enemyReceivedSpecAttack = true;
+	            specAttack = false;
+	            specX = 0;
+	            faza2 = false;
+	        }
+	        holdX = holdY = 0;
+	    }
+	    if (specX >= 1000) {
+	        holdX = holdY = holdSpec = 0;
+	        specAttack = false;
+	        specX = 0;
+	        faza2 = false;
+	    }
+	}
+
+	private void handleEnemyAI() {
+	    if (enemyAttackCount > 20) enemyAttackCount = 0;
+
+	    if (x < a && (a > x + 300)) enemyMove = true;
+	    
+	    if (enemyMove && !enemyEscape) {
+	        enemyChangeBase = !enemyChangeBase;
+	        handleEnemyMovement();
+	        handleEnemyJump();
+	        handleEnemyRetreat();
+	    } else {
+	        enemyChangeBase = !enemyChangeBase;
+	        if ((a >= 800 || a < x + 250) && !enemyAttack) enemyMove = true;
+	    }
+
+	    handleEnemyFly();
+	    handleEnemySpecialAttack();
+
+	    if (!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
+	        b = 790;
+	    }
+	}
+
+	private void handleEnemyMovement() {
+	    if (x < a && a >= x + borders) {
+	        holdA = -enemySpeed * side;
+	    } else if (x < a && a <= x + borders) {
+	        retreatRight = true;
+	    } else if (x > a && a <= x - borders) {
+	        holdA = enemySpeed * side;
+	    } else if (x > a && a >= x - borders) {
+	        retreatLeft = true;
+	    }
+	}
+
+	private void handleEnemyJump() {
+	    if (enemyJump && x >= a - 350 && y >= b - 120 && !enemyFly) {
+	        enemyJumpAttack = true;
+	        if (x >= a - 350 && !block) {
+	            punched = true;
+	        }
+	    }
+	}
+
+	private void handleEnemyRetreat() {
+	    if (a >= 800) retreatRight = false;
+	    if (x < a && retreatRight && a < 800) {
+	        holdA = enemySpeed * side;
+	    } else if (x < a && a > 800) {
+	        retreatRight = false;
+	    } else if (x > a && retreatLeft && a > 100) {
+	        holdA = -enemySpeed * side;
+	    } else if (a < 100) {
+	        retreatLeft = false;
+	    }
+	    enemyAttack = false;
+	    enemyAttackCount = 0;
+	}
+
+	private void handleEnemyFly() {
+	    if (fly && !enemyBarage && enemyKi > 50) {
+	        enemyFly = true;
+	        if (b > y - 50 && b < y + 100 && enemySpecX <= 0) {
+	            enemySpecX = a;
+	            enemySpecY = b;
+	            enemyBarage = true;
+	        }
+	    }
+
+	    if (enemyBarage || enemySpecX > 0) {
+	        enemySpecX -= 50 * side;
+	    }
+
+	    if (!fly && b > 770) {
+	        enemyFly = false;
+	        b = 790;
+	    }
+
+	    if (enemyReceivedSpecAttack) {
+	        holdA = 15;
+	        enemyAttack = false;
+	        holdB = (b > 785) ? -5 : 5;
+	    }
+
+	    if (enemyFly) {
+	        if (b > y + 30) {
+	            holdB = -15;
+	        } else if (b < y - 30) {
+	            holdB = 15;
+	        }
+	    }
+	}
+
+	private void handleEnemySpecialAttack() {
+	    if (enemyReceivedSpecAttack) {
+	        holdA = 15;
+	        enemyAttack = false;
+	        if (b > 785) {
+	            holdB = -5;
+	        } else {
+	            holdB = 5;
+	        }
+	    }
+
+	    if (x < a && a <= x + 200 && !enemyReceivedSpecAttack && !enemyPunched && !enemyEscape) {
+	        enemyAttack = true;
+	        enemyMove = false;
+	        holdA = 0;
+	    }
+
+	    if (x < a && specX >= a - 600 && specX <= a - 100 && specX > 0 && !enemyReceivedSpecAttack && !enemyPunched) {
+	        enemyJump = true;
+	        enemyAttack = false;
+	        holdA = -20;
+	        if (b < 600) {
+	            enemyReachTop = true;
+	        }
+	        holdB = enemyReachTop ? 10 : -25;
+	        if (b < 790 && enemyReachTop) {
+	            holdB = 0;
+	            enemyJump = false;
+	            enemyReachTop = false;
+	        }
+	    }
+
+	    if (jump && x >= a - 300) {
+	        enemyEscape = true;
+	        enemyAttack = false;
+	        holdA = 20 * side;
+	        holdB = 0;
+	        b = 790;
+	        enemyMove = false;
+	    }
+
+	    if (!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
+	        b = 790;
+	    }
+
+	    if (enemyKi < 50 && b == 790) {
+	        enemyFly = false;
+	    }
+
+	    if (enemyKi < 20 && enemyFly && !enemyJump) {
+	        holdB = 50;
+	        if (b > 790) {
+	            b = 790;
+	            enemyFly = false;
+	        }
+	    }
+	}
+
+	public static double izracunajRastojanje(int x1, int y1, int x2, int y2) {
+	    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	}
+}
 
 public class Fight {
 
