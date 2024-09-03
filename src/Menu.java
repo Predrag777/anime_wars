@@ -8,6 +8,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,6 +21,8 @@ public class Menu {
 
     private JFrame frame;
     private JLabel txt;
+    
+    private JLabel txts[];
 
     private int count;
     private int level;
@@ -46,6 +51,7 @@ public class Menu {
         this.count = 0;
         this.fighters = t.getFighters();
         this.log = false;
+        this.txts=new JLabel[this.fighters.length];
         playSound("ZvucniEfekti/intro.wav",100);
         initialize();
     }
@@ -90,7 +96,7 @@ public class Menu {
 
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 708, 473);
+        frame.setBounds(100, 100, 1000, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
@@ -114,8 +120,10 @@ public class Menu {
         txt.setForeground(Color.WHITE);
         backgroundPanel.add(txt);
         
-
-        JLabel lblImg2 = new JLabel("");
+        JLabel lblImgs []=new JLabel[this.fighters.length];
+        int startX=10;
+        int startY=275;
+        /*JLabel lblImg2 = new JLabel("");
         lblImg2.setBounds(324, 22, 273, 275);
         backgroundPanel.add(lblImg2);
         
@@ -123,9 +131,9 @@ public class Menu {
         txt.setText(fighters[count].getName());
         String url = "images/";
         ImageIcon img = new ImageIcon(url + fighters[count].getImg());
-        imgLbl.setIcon(img);
+        imgLbl.setIcon(img);*/
 
-        JButton btnNext = new JButton("Next");
+        /*JButton btnNext = new JButton("Next");
         btnNext.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
             	count++;
@@ -142,6 +150,28 @@ public class Menu {
         });
         btnNext.setBounds(39, 403, 117, 25);
         backgroundPanel.add(btnNext);
+        */
+        for(int i=0;i<fighters.length;i++) {
+        	System.out.println(fighters[i]);
+        	String ss = this.fighters[i].getImg();
+        	String url = "images/";
+        	System.out.println("SSSSSS: "+lblImgs.length);
+        	ImageIcon img = new ImageIcon(url + fighters[i].getImg());
+        	lblImgs[i]=new JLabel("");
+        	lblImgs[i].setBounds(startX, 22, 200, 275);
+        	lblImgs[i].setIcon(img);
+        	
+        	final int index = i;
+            lblImgs[i].addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    txt.setText(fighters[index].getName());
+                    fighter1=fighters[index];
+                }
+            });
+        	
+        	startX+=250;
+        	backgroundPanel.add(lblImgs[i]);
+        }
         
         JButton btnEasy = new JButton("Easy");
         btnEasy.addActionListener(new ActionListener() {
@@ -176,7 +206,7 @@ public class Menu {
                 
                 String url = "images/";
                 ImageIcon img = new ImageIcon(url + fighters[c].getImg());
-                lblImg2.setIcon(img);
+                //lblImg2.setIcon(img);
                 fighter2 = fighters[2];
                 File file = new File("Borbe.txt");
                 try {
