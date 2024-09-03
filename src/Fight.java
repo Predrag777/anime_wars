@@ -795,7 +795,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    x += holdX + holdFlyX;
 	    y -= holdY + holdFlyY;
 	    b += holdB;
-
+	    a += holdA;
 	    if (a < x + 100) {
 	        side = -1;
 	    } else {
