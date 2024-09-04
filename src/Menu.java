@@ -96,7 +96,7 @@ public class Menu {
 
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 1000, 500);
+        frame.setBounds(100, 100, 1000, 1000);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
@@ -111,18 +111,18 @@ public class Menu {
         backgroundPanel.add(imgLbl);
 
         JLabel lblName = new JLabel("Name: ");
-        lblName.setBounds(39, 322, 70, 15);
+        lblName.setBounds(39, 950, 70, 15);
         lblName.setForeground(Color.WHITE);
         backgroundPanel.add(lblName);
 
         txt = new JLabel();
-        txt.setBounds(98, 320, 134, 19);
+        txt.setBounds(98, 950, 134, 19);
         txt.setForeground(Color.WHITE);
         backgroundPanel.add(txt);
         
         JLabel lblImgs []=new JLabel[this.fighters.length];
         int startX=10;
-        int startY=275;
+        int startY=22;
         /*JLabel lblImg2 = new JLabel("");
         lblImg2.setBounds(324, 22, 273, 275);
         backgroundPanel.add(lblImg2);
@@ -152,13 +152,13 @@ public class Menu {
         backgroundPanel.add(btnNext);
         */
         for(int i=0;i<fighters.length;i++) {
-        	System.out.println(fighters[i]);
+        	//System.out.println(fighters[i]);
         	String ss = this.fighters[i].getImg();
         	String url = "images/";
-        	System.out.println("SSSSSS: "+lblImgs.length);
         	ImageIcon img = new ImageIcon(url + fighters[i].getImg());
         	lblImgs[i]=new JLabel("");
-        	lblImgs[i].setBounds(startX, 22, 200, 275);
+        	System.out.println(fighters[i]+"     "+(i+1)+"    ");
+        	lblImgs[i].setBounds(startX, startY, 200, 275);
         	lblImgs[i].setIcon(img);
         	
         	final int index = i;
@@ -168,8 +168,13 @@ public class Menu {
                     fighter1=fighters[index];
                 }
             });
-        	
-        	startX+=250;
+            
+            
+            if((i+1)%4==0) {
+            	startX=10;
+                startY+=250;
+            }else
+            	startX+=250;
         	backgroundPanel.add(lblImgs[i]);
         }
         
@@ -223,11 +228,11 @@ public class Menu {
                 p.add(a);
             }
         });
-        btnSubmit.setBounds(591, 403, 95, 25);
+        btnSubmit.setBounds(891, 950, 95, 25);
         
-        btnEasy.setBounds(350, 350, 85, 25);
-        btnMedium.setBounds(350, 390, 85, 25);
-        btnHard.setBounds(350, 430, 85, 25);
+        btnEasy.setBounds(500, 750, 85, 25);
+        btnMedium.setBounds(500, 850, 85, 25);
+        btnHard.setBounds(500, 950, 85, 25);
         backgroundPanel.add(btnEasy);
         backgroundPanel.add(btnMedium);
         backgroundPanel.add(btnHard);

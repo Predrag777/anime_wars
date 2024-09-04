@@ -901,7 +901,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    }
 
 	    handleEnemyFly();
-	    handleEnemySpecialAttack();
+	    enemySpecialAttacked();
 
 	    if (!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
 	        b = 790;
@@ -978,7 +978,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    }
 	}
 
-	private void handleEnemySpecialAttack() {
+	private void enemySpecialAttacked() {
 	    if (enemyReceivedSpecAttack) {
 	        holdA = 15;
 	        enemyAttack = false;
@@ -989,7 +989,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	        }
 	    }
 
-	    if (x < a && a <= x + 200 && !enemyReceivedSpecAttack && !enemyPunched && !enemyEscape) {
+	    if (x < a && a <= x + 200  && !enemyReceivedSpecAttack && !enemyPunched && !enemyEscape) {
 	        enemyAttack = true;
 	        enemyMove = false;
 	        holdA = 0;

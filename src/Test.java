@@ -10,10 +10,9 @@ public class Test {
 
 
 	public void test(){
-			a=new Arena(4);
+			a=new Arena(5);
 			
 			try {
-				
 				Fighter f1=new Saiyan();
 				a.addFighter(f1);
 				
@@ -26,11 +25,8 @@ public class Test {
 				
 				Fighter f4=new Human();
 				a.addFighter(f4);
-			
-				Fighter f6=new Human();
-				a.addFighter(f6);
+				Fighter f=new Human();
 				
-				Fighter f=new Saiyan();
 				a.addFighter(f);
 				
 			

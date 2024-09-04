@@ -22,12 +22,13 @@ public class Human extends Fighter{
 				tempArr=line.split(", ");
 				d++;
 			}while((line=buff.readLine())!=null && !tempArr[1].equalsIgnoreCase(super.getWho()) || !Arena.isSafe(tempArr[0], Test.getA().getFighters()));
-
+			System.out.println(Arena.isSafe(tempArr[0], Test.getA().getFighters()));
 			if(line!=null && Arena.isSafe(tempArr[0], Test.getA().getFighters())) {
 				this.animeTitle=tempArr[8];
+				
 				return;
 			}
-			throw new NoFighterException("Nema vise boraca tipa: "+super.getWho());
+			throw new NoFighterException("Nema vise boraca tipa: "+tempArr[0]);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

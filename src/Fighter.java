@@ -22,6 +22,7 @@ public class Fighter implements GenerateID{
 	public Fighter(String who) throws NoFighterException{
 		super();
 		this.who=who;
+		
 		try {
 			BufferedReader buff=new BufferedReader(new FileReader("Fighters.txt"));
 			String tempArr[]=null;
@@ -33,8 +34,9 @@ public class Fighter implements GenerateID{
 			do {
 				tempArr=line.split(", ");
 			}while((line=buff.readLine())!=null && !tempArr[1].equalsIgnoreCase(who) || !Arena.isSafe(tempArr[0], Test.getA().getFighters()));
-		
+				
 				this.name=tempArr[0];
+				
 				this.id=generate();
 				this.height=Integer.parseInt(tempArr[2]);
 				this.weight=Integer.parseInt(tempArr[3]);

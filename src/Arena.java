@@ -8,8 +8,8 @@ public class Arena {
 		super();
 		if(num<=0)
 			num=3;
-		this.num=num;
-		fighters=new Fighter[num];
+		this.num=5;
+		fighters=new Fighter[this.num];
 	}
 
 	
