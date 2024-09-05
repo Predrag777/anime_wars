@@ -277,14 +277,29 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			
 			if(ulty) {
-				if(count<30) {
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm.png";
-					System.out.println(ss);
-					ulti_ss="Ulty";
-					
+				
+				if(f1.getWho().equalsIgnoreCase("Saiyan")) {
+					if(count<30) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm.png";
+						System.out.println(ss);
+						ulti_ss="Ulty";
+						
+					}else {
+						ulty=false;
+						count=0;
+					}
 				}else {
-					ulty=false;
-					count=0;
+					if(count<10) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm1.png";
+						System.out.println(ss);
+						ulti_ss="Ulty";
+						
+					}else if(count<20){
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm2.png";
+					}else {
+						ulty=false;
+						count=0;
+					}
 				}
 				count++;
 			}
@@ -367,7 +382,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				if(!f1.getWho().equalsIgnoreCase("Saiyan")) {
 					System.out.println(alchemyAttackX);
 					if(permutCircleCounter<15)
-						g.drawImage(wave,alchemyAttackX, 900,   100*side,100,null);////Projektil
+						g.drawImage(wave,alchemyAttackX-200, 900,   400,100,null);////Projektil
 					else {
 						faza2=false;
 						permutCircleCounter=0;
