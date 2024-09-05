@@ -935,19 +935,37 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	        if ((a >= 800 || a < x + 250) && !enemyAttack) enemyMove = true;
 	    }*/
 	    
-	    int move=MonteKarlo(15, a, x, 40, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi);
-//int stepSize, int x, int a, int effectiveDistance, int basicAttack,
-//        int timeForBasicAttack, int myHelth, int enemyHealth, int specAttack, int specAttackSpeed,
- //       int timeForSpecAttack, int ki
+	    int move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi);
+	    //System.out.println(move+"    "+a+"    "+x);
 	    if(move==1) {
 	    	a-=holdA;
 	    	enemyMove=true;
 	    }else if(move==2) {
 	    	a+=holdA;
 	    	enemyMove=true;
+	    	enemyJump=enemyPunch=false;
 	    }else if(move==3) {
+	        enemyJump = true;
+	        enemyAttack = false;
+	        holdA = -20;
+	        if (b < 600) {
+	            enemyReachTop = true;
+	        }
+	        holdB = enemyReachTop ? 10 : -25;
+	        if (b < 790 && enemyReachTop) {
+	            holdB = 0;
+	            enemyJump = false;
+	            enemyReachTop = false;
+	        }
+	        enemyMove=enemyPunch=false;
+	    }else if(move==4) {
+	    	enemyAttack=true;
+	    	enemyMove=enemyJump=enemyPunch=false;
+	    }else {
+	    	enemyAttack=true;
+	    	enemyMove=enemyJump=enemyPunch=false;
+	    	System.out.println("SSSSSS");
 	    	
-	    	enemyJump=true;
 	    }
 	    handleEnemyFly();
 	    enemySpecialAttacked();
@@ -1108,7 +1126,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			  totalScore += simulateMove(move, stepSize, x, a, effectiveDistance, basicAttack, 
 			          timeForBasicAttack, myHelth, enemyHealth, specAttack, specAttackSpeed, timeForSpecAttack, ki);
 			}
-			System.out.println(move+"   "+totalScore);
 			
 			if(totalScore>bestScore) {
 				bestScore=totalScore;
