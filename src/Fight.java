@@ -30,6 +30,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int level=0, enemyAttackConstr;
 	
 	int speed=0;double pravacX=1, pravacY=1, dirX=1, dirY=1;
+	
+	int alchemyAttackX=0;
+	
+	int permutCircleCounter=0;
+	
+	
 	double target=0.0, targetMe=0.0;
 	int enemySpeed=15;
 	int enemySpecX=-10;int enemySpecY=0;
@@ -163,7 +169,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		try {
 			String ss=f1.getFile()+"/"+f1.getName().toLowerCase()+ulti_ss+"Base.png";
 			String waff=f2.getFile()+"/"+f2.getName().toLowerCase()+"Base.png";
-        
+			
 			String s="";
 			
 			if(!changeBase) {
@@ -246,6 +252,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}
 				if(faza2) {
 					count=0;
+					if(!f1.getWho().equalsIgnoreCase("Saiyan"))
+						alchemyAttackX=a;
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack2.png";
 				}
 				count++;
@@ -354,8 +362,19 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			g.drawImage(image,x+100*side*-1,y,200*side,200,null);
 			
 			if(faza2) {
-				wave=ImageIO.read(new File("folder1/wave.png"));			
-				g.drawImage(wave,specX+200, specY,   100*side,100,null);////Projektil
+				
+				wave=ImageIO.read(new File(f1.getFile()+"/"+f1.getName().toLowerCase()+"Power.png"));	
+				if(!f1.getWho().equalsIgnoreCase("Saiyan")) {
+					System.out.println(alchemyAttackX);
+					if(permutCircleCounter<15)
+						g.drawImage(wave,alchemyAttackX, 900,   100*side,100,null);////Projektil
+					else {
+						faza2=false;
+						permutCircleCounter=0;
+					}
+					permutCircleCounter++;
+				}else
+					g.drawImage(wave,specX+200, specY,   100*side,100,null);////Projektil
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -794,8 +813,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	private void handleMovement() {
 	    x += holdX + holdFlyX;
 	    y -= holdY + holdFlyY;
-	    b += holdB;
-	    a += holdA;
+	    /*b += holdB;
+	    a += holdA;*/
 	    if (a < x + 100) {
 	        side = -1;
 	    } else {
