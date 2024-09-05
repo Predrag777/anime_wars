@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -924,7 +925,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 
 	    if (x < a && (a > x + 300)) enemyMove = true;
 	    
-	    if (enemyMove && !enemyEscape) {
+	    /*if (enemyMove && !enemyEscape) {
 	        enemyChangeBase = !enemyChangeBase;
 	        handleEnemyMovement();
 	        handleEnemyJump();
@@ -932,8 +933,22 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    } else {
 	        enemyChangeBase = !enemyChangeBase;
 	        if ((a >= 800 || a < x + 250) && !enemyAttack) enemyMove = true;
+	    }*/
+	    
+	    int move=MonteKarlo(15, a, x, 40, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi);
+//int stepSize, int x, int a, int effectiveDistance, int basicAttack,
+//        int timeForBasicAttack, int myHelth, int enemyHealth, int specAttack, int specAttackSpeed,
+ //       int timeForSpecAttack, int ki
+	    if(move==1) {
+	    	a-=holdA;
+	    	enemyMove=true;
+	    }else if(move==2) {
+	    	a+=holdA;
+	    	enemyMove=true;
+	    }else if(move==3) {
+	    	
+	    	enemyJump=true;
 	    }
-
 	    handleEnemyFly();
 	    enemySpecialAttacked();
 
@@ -941,7 +956,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	        b = 790;
 	    }
 	}
-
+	
+	
 	private void handleEnemyMovement() {
 	    if (x < a && a >= x + borders) {
 	        holdA = -enemySpeed * side;
@@ -1073,6 +1089,90 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public static double izracunajRastojanje(int x1, int y1, int x2, int y2) {
 	    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 	}
+	
+    public int MonteKarlo(int stepSize, int x, int a, int effectiveDistance, int basicAttack,
+            int timeForBasicAttack, int myHelth, int enemyHealth, int specAttack, int specAttackSpeed,
+            int timeForSpecAttack, int ki) 
+{
+			Random rand = new Random();
+			int numSimulations = 10; // Broj simulacija
+			double bestScore = Double.NEGATIVE_INFINITY;
+			int bestMove = -1;
+			
+			// Imamo 5 poteza: 1 = MoveLeft, 2 = MoveRight, 3 = Jump, 4 = BasicAttack, 5 = SpecAttack
+			for (int move = 1; move <= 5; move++) {
+			double totalScore = 0;
+			
+			// Simuliramo svaki potez više puta
+			for (int i = 0; i < numSimulations; i++) {
+			  totalScore += simulateMove(move, stepSize, x, a, effectiveDistance, basicAttack, 
+			          timeForBasicAttack, myHelth, enemyHealth, specAttack, specAttackSpeed, timeForSpecAttack, ki);
+			}
+			System.out.println(move+"   "+totalScore);
+			
+			if(totalScore>bestScore) {
+				bestScore=totalScore;
+				bestMove=move;
+			}
+			/*// Prosečan rezultat za trenutni potez
+			double averageScore = totalScore / numSimulations;
+			
+			// Ako je ovaj potez bolji, postaje najbolji
+			if (averageScore > bestScore) {
+			  bestScore = averageScore;
+			  bestMove = move;
+			}*/
+			}
+			
+			return bestMove; // Vraća broj koji predstavlja najbolji potez
+}
+
+// Simulacija jednog poteza
+public double simulateMove(int move, int stepSize, int x, int a, int effectiveDistance, int basicAttack,
+                 int timeForBasicAttack, int myHelth, int enemyHealth, int specAttack, int specAttackSpeed,
+                 int timeForSpecAttack, int ki) 
+{
+			Random rand = new Random();
+			double score = 0;
+			int distance = Math.abs(a - x);  // Udaljenost između igrača i protivnika
+			
+			// Nasumično simuliramo akcije i njihove ishode
+			switch (move) {
+				case 1:
+				  x-=stepSize;
+				  if((a-x)>200) {
+				  	score=rand.nextInt(40);
+				  }
+				  break;
+				case 2:
+					x-=stepSize;
+					if((a-x)>200) {
+						score=rand.nextInt(40);
+					}
+					break;
+				case 3:
+					x-=stepSize;
+					if((a-x)>400) {
+						score=rand.nextInt(50);
+					}
+					break;
+				case 4:
+					if(a-stepSize<effectiveDistance) {
+						score=rand.nextInt(80);
+					}else
+						score=rand.nextInt(20);
+				case 5:
+					if(x-a>500 && ki>50) {
+						score=rand.nextInt(50);
+					}
+			  
+			}
+			
+			// Prilagođavanje rezultata na osnovu zdravlja
+			score += (myHelth - enemyHealth) * 0.1; // Veći skor ako igrač ima više zdravlja
+			
+			return score;
+}
 }
 
 public class Fight {

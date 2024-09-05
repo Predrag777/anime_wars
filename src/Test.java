@@ -25,10 +25,13 @@ public class Test {
 				
 				Fighter f4=new Human();
 				a.addFighter(f4);
-				Fighter f=new Human();
+				Fighter f5=new Human();
 				
-				a.addFighter(f);
+				a.addFighter(f5);
 				
+				
+				Fighter f6=new Human();
+				a.addFighter(f6);
 			
 				
 			/*	Fighter f7=new Human();

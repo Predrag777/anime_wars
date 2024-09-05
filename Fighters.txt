@@ -3,4 +3,5 @@ Piccolo, Human, 160, 40, Yellow, Red, picolo.jpeg, folder2, FMA
 Vegeta, Saiyan, 176, 65, Black, Blue, vegeta2.jpeg, folder3, 2, Galick Gun, Black Storm
 Krilin, Human, 140, 55, Skinhead, Red, krilin.jpeg, folder4, DbZ
 EdwardElric, Human, 168, 45, Grey, Black, Ed.jpeg, folder5, FMA
+Al, Human, 200, 200, Black, Black, Al.jpeg, folder6, FMA
 Edward Elric, Human, 168, 45, Grey, Black, Ed.jpeg, folder5, FMA
