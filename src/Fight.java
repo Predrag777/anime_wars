@@ -902,7 +902,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    if (specAttack && faza2) {
 	        specX += holdSpec * side;
 	        specY += holdSpecY * pravacY;
-	        if (specX >= a - 260 && b > 700 && specY >= 750) {
+	        if (specX >= a - 260 && b-specY>20) {
+	        	System.out.println(b+"    "+specY);
 	            enemyHelth -= 40;
 	            enemyJumpAttack = enemyJump = false;
 	            enemyReceivedSpecAttack = true;
@@ -925,17 +926,34 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    
 	    int move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi);
 	    System.out.println(move);
-	    
-	    if(move==1) {
-	    	enemyMove=true;
-	    	enemyAttack=false;
-	    	enemyJump=false;
-	    	holdA=-15;
-	    }else if(move==2){
-	    	enemyMove=true;
-	    	enemyAttack=false;
-	    	enemyJump=false;
-	    	holdA=15;
+	    if(!enemyReceivedSpecAttack && !enemyAttack && !enemyPunched) {
+		    if(move==1 ) {
+		    	enemyChangeBase = !enemyChangeBase;
+		    	enemyMove=true;
+		    	enemyAttack=false;
+		    	enemyJump=false;
+		    	holdA=-15;
+		    }else if(move==2){
+		    	enemyChangeBase = !enemyChangeBase;
+		    	enemyMove=true;
+		    	enemyAttack=false;
+		    	enemyJump=false;
+		    	holdA=15;
+		    }else if(move==3) {
+		    	enemyJump=true;
+		    	holdB=-35;
+		    	if(b<=600 && !enemyReachTop) {
+		    		enemyReachTop=true;
+		    	}
+		    	if(enemyReachTop) {
+		    		holdB=35;
+		    	}
+		    	if(enemyReachTop && b>=790) {
+		    		b=790;
+		    		enemyJump=false;
+		    		enemyReachTop=false;
+		    	}
+		    }
 	    }
 	    
 	    
@@ -954,7 +972,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    }*/
 
 	    handleEnemyFly();
-	    enemySpecialAttacked();
+	    //enemySpecialAttacked();
 
 	    if (!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
 	        b = 790;
@@ -1157,7 +1175,9 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 				  }
 				  if((a-x)>500)
 					  score=rand.nextInt(60);
-				  
+				  if((a-x)<100 && enemyHealth<myHelth)
+					  score=rand.nextInt(80);
+					  
 				  break;
 				case 2:
 					a-=stepSize;
@@ -1181,6 +1201,9 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 					a-=stepSize;
 					if((a-x)>500) {
 						score=rand.nextInt(50);
+					}
+					if(a-specX<500) {
+						score=rand.nextInt(90);
 					}
 					break;
 				case 4:
