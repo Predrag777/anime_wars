@@ -65,11 +65,11 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyNumberAttack=6;
 		}
 		//playSound("ZvucniEfekti/back_sound.wav", 100);
-		System.out.println(level+"    "+enemySpeed+"    "+enemyAttackConstr);
+		System.out.println(level+"    "+enemySpeed+"    "+enemyAttackConstr+"   "+specX);
 	}
 	
 	int myHelth=100;
-	int enemyHelth=30;
+	int enemyHelth=52;
 	int borders=190;
 	
 	
@@ -381,7 +381,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				
 				wave=ImageIO.read(new File(f1.getFile()+"/"+f1.getName().toLowerCase()+"Power.png"));	
 				if(!f1.getWho().equalsIgnoreCase("Saiyan")) {
-					System.out.println(alchemyAttackX);
+					//System.out.println(alchemyAttackX);
 					if(permutCircleCounter<15)
 						g.drawImage(wave,alchemyAttackX-200, 900,   400,100,null);////Projektil
 					else {
@@ -678,7 +678,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public void specAttack() {
 		myKi-=50;
 		specAttack=true;
-		holdSpec=30;
+		holdSpec=100;
 		holdSpecY=0;
 		if(fly) 
 			holdSpecY=100;
@@ -903,7 +903,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	        specX += holdSpec * side;
 	        specY += holdSpecY * pravacY;
 	        if (specX >= a - 260 && b-specY>20) {
-	        	System.out.println(b+"    "+specY);
+	        	//System.out.println(b+"    "+specY);
 	            enemyHelth -= 40;
 	            enemyJumpAttack = enemyJump = false;
 	            enemyReceivedSpecAttack = true;
@@ -921,63 +921,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    }
 	}
 
-	private void handleEnemyAI() {
-	    if (enemyAttackCount > 20) enemyAttackCount = 0;
-	    
-	    int move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi);
-	    System.out.println(move);
-	    if(!enemyReceivedSpecAttack && !enemyAttack && !enemyPunched) {
-		    if(move==1 ) {
-		    	enemyChangeBase = !enemyChangeBase;
-		    	enemyMove=true;
-		    	enemyAttack=false;
-		    	enemyJump=false;
-		    	holdA=-15;
-		    }else if(move==2){
-		    	enemyChangeBase = !enemyChangeBase;
-		    	enemyMove=true;
-		    	enemyAttack=false;
-		    	enemyJump=false;
-		    	holdA=15;
-		    }else if(move==3) {
-		    	enemyJump=true;
-		    	holdB=-35;
-		    	if(b<=600 && !enemyReachTop) {
-		    		enemyReachTop=true;
-		    	}
-		    	if(enemyReachTop) {
-		    		holdB=35;
-		    	}
-		    	if(enemyReachTop && b>=790) {
-		    		b=790;
-		    		enemyJump=false;
-		    		enemyReachTop=false;
-		    	}
-		    }
-	    }
-	    
-	    
-	    a+=holdA;
-	    b+=holdB;
-	    /*if (x < a && (a > x + 300)) enemyMove = true;
-	    
-	    if (enemyMove && !enemyEscape) {
-	        enemyChangeBase = !enemyChangeBase;
-	        handleEnemyMovement();
-	        handleEnemyJump();
-	        handleEnemyRetreat();
-	    } else {
-	        enemyChangeBase = !enemyChangeBase;
-	        if ((a >= 800 || a < x + 250) && !enemyAttack) enemyMove = true;
-	    }*/
-
-	    handleEnemyFly();
-	    //enemySpecialAttacked();
-
-	    if (!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
-	        b = 790;
-	    }
-	}
+	
 
 	private void handleEnemyMovement() {
 	    if (x < a && a >= x + borders) {
@@ -1126,22 +1070,104 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	public static double izracunajRastojanje(int x1, int y1, int x2, int y2) {
 	    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 	}
-	
+	private void handleEnemyAI() {
+		
+		
+	    if (enemyAttackCount > 20) enemyAttackCount = 0;
+	    
+	    int move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi);
+	    System.out.println((a-x)+"   SSSWWWW    "+a+"      =>   "+move);
+	    //System.out.println(move+"   "+a+"    "+specY);
+	    if(!enemyReceivedSpecAttack && !enemyAttack && !enemyPunched && !enemyJump) {
+		    if(move==1) {
+		    	enemyChangeBase = !enemyChangeBase;
+		    	enemyMove=true;
+		    	enemyAttack=false;
+		    	enemyJump=false;
+		    	holdA=-15;
+		    }else if(move==2){
+		    	enemyChangeBase = !enemyChangeBase;
+		    	enemyMove=true;
+		    	enemyAttack=false;
+		    	enemyJump=false;
+		    	holdA=15;
+		    }else if(move==4) {
+	    		enemyMove=false;
+	    		holdA=holdB=0;
+	    		enemyAttack=true;
+	    	}else if(move==3) {
+	    		enemyJump=true;
+		    	
+	    	}
+		    
+		    
+		    /*else if(move==3) {
+		    	enemyJump=true;
+		    	holdB=-35;
+		    	if(b<=600 && !enemyReachTop) {
+		    		enemyReachTop=true;
+		    	}
+		    	if(enemyReachTop) {
+		    		holdB=35;
+		    	}
+		    	if(enemyReachTop && b>=790) {
+		    		b=790;
+		    		enemyJump=false;
+		    		enemyReachTop=false;
+		    	}
+		    }*/
+	    }
+	    if(enemyJump) {
+	    	holdB=-35;
+	    	if(b<=600 && !enemyReachTop) {
+	    		enemyReachTop=true;
+	    	}
+	    	if(enemyReachTop) {
+	    		holdB=35;
+	    	}
+	    	if(enemyReachTop && b>=790) {
+	    		b=790;
+	    		enemyJump=false;
+	    		enemyReachTop=false;
+	    	}
+	    }
+	    		
+	    
+	    
+	    a+=holdA;
+	    b+=holdB;
+	    /*if (x < a && (a > x + 300)) enemyMove = true;
+	    
+	    if (enemyMove && !enemyEscape) {
+	        enemyChangeBase = !enemyChangeBase;
+	        handleEnemyMovement();
+	        handleEnemyJump();
+	        handleEnemyRetreat();
+	    } else {
+	        enemyChangeBase = !enemyChangeBase;
+	        if ((a >= 800 || a < x + 250) && !enemyAttack) enemyMove = true;
+	    }*/
+
+	    handleEnemyFly();
+	    //enemySpecialAttacked();
+
+	    if (!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
+	        b = 790;
+	    }
+	}
 	
     public int MonteKarlo(int stepSize, int x, int a, int effectiveDistance, int basicAttack,
             int timeForBasicAttack, int myHelth, int enemyHealth, int specAttack, int specAttackSpeed,
             int timeForSpecAttack, int ki) 
 {
 			Random rand = new Random();
-			int numSimulations = 10; // Broj simulacija
+			int numSimulations = 1000; // Broj simulacija
 			double bestScore = Double.NEGATIVE_INFINITY;
 			int bestMove = -1;
 			
-			// Imamo 5 poteza: 1 = MoveLeft, 2 = MoveRight, 3 = Jump, 4 = BasicAttack, 5 = SpecAttack
 			for (int move = 1; move <= 5; move++) {
 			double totalScore = 0;
 			
-			// Simuliramo svaki potez više puta
 			for (int i = 0; i < numSimulations; i++) {
 			  totalScore += simulateMove(move, stepSize, x, a, effectiveDistance, basicAttack, 
 			          timeForBasicAttack, myHelth, enemyHealth, specAttack, specAttackSpeed, timeForSpecAttack, ki);
@@ -1169,52 +1195,45 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 			// Nasumično simuliramo akcije i njihove ishode
 			switch (move) {
 				case 1:
-				  a-=stepSize;
-				  if((a-x)>200) {
-				  	score=rand.nextInt(45);
+				  if(a>x+200 && myHelth<50) {
+					  score=rand.nextInt(20)+5;
 				  }
-				  if((a-x)>500)
-					  score=rand.nextInt(60);
-				  if((a-x)<100 && enemyHealth<myHelth)
-					  score=rand.nextInt(80);
-					  
+				  score=rand.nextInt(50)+6;
+				  
 				  break;
 				case 2:
-					a-=stepSize;
-					if((a-x)<0) {
-						score=rand.nextInt(60);
-					}
-					else if((a-x)<40 && enemyHelth>50) {
-						score=rand.nextInt(40);
-					}
-					else {
-						score=rand.nextInt(20);
-					}
 					
+					score=rand.nextInt(50)+5;
+					break;
+					/*
 					if(enemyHelth<50 && myHelth>enemyHelth)
 						score=rand.nextInt(50);
 					if(a>800)
 						  score=0;
-					break;
+					break;*/
 					
 				case 3:
 					a-=stepSize;
 					if((a-x)>500) {
 						score=rand.nextInt(50);
 					}
-					if(a-specX<500) {
+					if(a-specX<500 && specY>0) {
 						score=rand.nextInt(90);
+					}
+					if(specX<100 || specX>800) {
+						
+						score=0;
 					}
 					break;
 				case 4:
-					if(((a-stepSize)-x)<effectiveDistance) {
+					if(((a-stepSize)-x)<120) {
 						score=rand.nextInt(80);
 					}else
 						score=rand.nextInt(20);
-				case 5:
+				/*case 5:
 					if(a-x>700 && ki>50) {
 						score=rand.nextInt(50);
-					}
+					}*/
 			  
 			}
 			
