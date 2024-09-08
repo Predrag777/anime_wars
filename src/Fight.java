@@ -71,6 +71,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int myHelth=100;
 	int enemyHelth=52;
 	int borders=190;
+	int enemyPunchedCounter=0;
 	
 	
 	int count=0, groundedCount=0;
@@ -109,11 +110,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean enemyReachTop=false;
 	boolean enemyJumpAttack=false;
 	boolean enemyBlock=false;
+	boolean enemySpecAttack=false;
 	boolean selectNewAttack =true;
 	boolean chase=false;
 	boolean grounded=false;
 	boolean enemyFly=false,  enemyBarage=false;int enemyBarageCounter=0;
 	int enemyKi=100;
+	int enemySpecAttackCounter=0;
 	
 	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
 	String enemyJumpAtacks[] = {"JumpAttack.png"};
@@ -145,13 +148,17 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 	boolean faza1=false;
 	boolean faza2=false;
-		
+	int previousMove=0;
 		
 		
 	boolean changeBase=true;
 		
 	boolean slide=false;
-		
+	
+	
+	
+	
+	int enemyMoveCounter=0;
 	int side=1;
 		
 	public void paintComponent(Graphics g) {
@@ -544,6 +551,19 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}
 				
 			}
+			
+			/*if(enemySpecAttack) {
+				if(enemySpecAttackCounter<30) {
+					waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"SpecAttack.png";//////////////////////////CHANGE!!!
+				}else {
+					waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"SpecAttack2.png";//////////////////////////CHANGE!!!
+					enemySpecX=40;
+				}
+				
+				if()
+				
+				enemySpecAttackCounter=0;
+			}*/
 			
 			if(enemySpecX>0) {
 				enemyWave=ImageIO.read(new File("folder1/wave.png"));
@@ -1075,10 +1095,13 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		
 	    if (enemyAttackCount > 20) enemyAttackCount = 0;
 	    
-	    int move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi);
-	    System.out.println((a-x)+"   SSSWWWW    "+a+"      =>   "+move);
+	   
+	    int move=0;
 	    //System.out.println(move+"   "+a+"    "+specY);
 	    if(!enemyReceivedSpecAttack && !enemyAttack && !enemyPunched && !enemyJump) {
+	    	move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi);
+	    	
+		    System.out.println((a-x)+"   SSSWWWW    "+a+"      =>   "+move);
 		    if(move==1) {
 		    	enemyChangeBase = !enemyChangeBase;
 		    	enemyMove=true;
@@ -1098,6 +1121,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    	}else if(move==3) {
 	    		enemyJump=true;
 		    	
+	    	}else if(move==5) {
+	    		enemyBarage=true;
 	    	}
 		    
 		    
@@ -1133,7 +1158,14 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    }
 	    		
 	    
-	    
+	    if(enemyPunched) {
+	    	enemyAttack=false;
+	    	enemyAttackCount=0;
+	    	enemyPunchedCounter++;
+	    	if(enemyPunchedCounter>=3) {
+	    		holdA=20;
+	    	}
+	    }
 	    a+=holdA;
 	    b+=holdB;
 	    /*if (x < a && (a > x + 300)) enemyMove = true;
@@ -1202,8 +1234,22 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 				  
 				  break;
 				case 2:
-					
 					score=rand.nextInt(50)+5;
+					if(enemyHealth<50)
+						score=rand.nextInt(50)+5;
+					if(enemyHealth<30) {
+						if(x>400)
+							score=rand.nextInt(50);
+						else
+							score=rand.nextInt(50)+6;
+					}
+					if(enemyHealth<20) {
+						if(x>400)
+							score=rand.nextInt(40)+10;
+						else
+							score=rand.nextInt(50)+7;
+					}
+
 					break;
 					/*
 					if(enemyHelth<50 && myHelth>enemyHelth)
@@ -1229,11 +1275,12 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 					if(((a-stepSize)-x)<120) {
 						score=rand.nextInt(80);
 					}else
-						score=rand.nextInt(20);
-				/*case 5:
-					if(a-x>700 && ki>50) {
-						score=rand.nextInt(50);
-					}*/
+						score=rand.nextInt(30)+5;
+					break;
+				case 5:
+					if(a-x>500 && ki>50) {
+						score=rand.nextInt(100);
+					}
 			  
 			}
 			
