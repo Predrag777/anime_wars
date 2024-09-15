@@ -69,7 +69,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	int myHelth=100;
-	int enemyHelth=52;
+	int enemyHelth=12;
 	int borders=190;
 	int enemyPunchedCounter=0;
 	
@@ -115,7 +115,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean chase=false;
 	boolean grounded=false;
 	boolean enemyFly=false,  enemyBarage=false;int enemyBarageCounter=0;
-	int enemyKi=100;
+	double enemyKi=1;
 	int enemySpecAttackCounter=0;
 	
 	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
@@ -171,7 +171,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		if(enemyKi<100 && !enemyFly && !enemyBarage) {
-			enemyKi+=1;
+			enemyKi+=0.5;
 		}
 		
 		try {
@@ -532,7 +532,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			}
 			
 			if(enemyFly) {
-				enemyKi-=1;
+				enemyKi-=1.0;
 				waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Jump.png";
 			}
 			
@@ -545,7 +545,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"BarageFire.png";
 				}else {
 
-					enemyKi-=10;
+					enemyKi-=40.0;
 					playSound("ZvucniEfekti/barageFire.wav",0);
 					enemyBarage=false;
 					enemyBarageCounter=0;
@@ -647,7 +647,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		    g.drawString(String.valueOf(myKi), 10, 150); 
 		    
 		    g.setColor(Color.BLUE);
-		    g.drawString(String.valueOf(enemyKi), getWidth() - 90, 150); 
+		    g.drawString(String.valueOf(Integer.parseInt((enemyKi+""))), getWidth() - 90, 150); 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -829,6 +829,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    handleSlide();
 	    handleGrounding();
 	    handleSpecialAttack();
+	    System.out.println(x+"   "+a+"    "+(a-x));
 	    handleEnemyAI();
 	}
 
@@ -1112,7 +1113,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	   
 	    int move=0;
 	    if(!enemyReceivedSpecAttack && !enemyAttack && !enemyPunched && !enemyJump) {
-	    	move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi, specAttack);
+	    	move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, Integer.parseInt(enemyKi+""), specAttack);
 	    	
 		    //System.out.println((a-x)+"  WAFFEN");
 		    if(move==1) {
@@ -1229,10 +1230,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 }
 
 // Simulacija jednog poteza
-public double simulateMove(int move, int stepSize, int x, int a, int effectiveDistance, int basicAttack,
-                 int timeForBasicAttack, int myHelth, int enemyHealth, int specAttack, int specAttackSpeed,
-                 int timeForSpecAttack, int ki, boolean specialAttack) 
-{
+			public double simulateMove(int move, int stepSize, int x, int a, int effectiveDistance, int basicAttack,
+			                 int timeForBasicAttack, int myHelth, int enemyHealth, int specAttack, int specAttackSpeed,
+			                 int timeForSpecAttack, int ki, boolean specialAttack) 
+			{
 			Random rand = new Random();
 			double score = 0;
 			int distance = Math.abs(a - x);  // Udaljenost između igrača i protivnika
@@ -1253,16 +1254,17 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 				  if(enemyBarage) {
 					  score=0;
 				  }
-				  if(a-x<250)
+				  if(a-x>600)
 					  score=rand.nextInt(70);
+				  
 				  break;
 				case 2:
 					score=rand.nextInt(50)+5;
 					if(enemyHealth<50)
-						score=rand.nextInt(50)+5;
+						score=rand.nextInt(50)+3;
 					if(enemyHealth<30) {
 						if(x>400)
-							score=rand.nextInt(50);
+							score=rand.nextInt(50)+4;
 						else
 							score=rand.nextInt(50)+6;
 					}
@@ -1270,13 +1272,16 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 						if(x>400)
 							score=rand.nextInt(40)+10;
 						else
-							score=rand.nextInt(50)+7;
+							score=rand.nextInt(50)+6;
 					}
 					if(a>900)
 						score=0;
 					 if(enemyBarage) {
 						  score=0;
 					  }
+					 if(attack && a-x<=300) {
+						 score=rand.nextInt(1000);
+					 }
 					break;
 					/*
 					if(enemyHelth<50 && myHelth>enemyHelth)
@@ -1288,7 +1293,7 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 				case 3:
 					a-=stepSize;
 					if((a-x)>500) {
-						score=rand.nextInt(50);
+						score=rand.nextInt(50)+4;
 					}
 					if(specialAttack) {
 						if(a-specX<500 && specY>0) {
