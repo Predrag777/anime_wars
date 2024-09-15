@@ -1121,35 +1121,40 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    	move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi, specAttack);
 	    	
 		    //System.out.println((a-x)+"  WAFFEN");
-		    if(move==1) {
-		    	if(!enemyFly)
-		    		enemyChangeBase = !enemyChangeBase;
-		    	enemyMove=true;
-		    	enemyAttack=false;
-		    	enemyJump=false;
-		    	holdA=-15;
-		    }else if(move==2){
-		    	if(!enemyFly)
-		    		enemyChangeBase = !enemyChangeBase;
-		    	enemyMove=true;
-		    	enemyAttack=false;
-		    	enemyJump=false;
-		    	holdA=15;
-		    }else if(move==4) {
-	    		enemyMove=false;
-	    		holdA=holdB=0;
-	    		enemyAttack=true;
-	    	}else if(move==3) {
-	    		enemyJump=true;
-		    	
-	    	}else if(move==5) {
-	    		enemyBarage=true;
-	    	}
-		    
+		    if(!enemyEscape) {
+		    	if(move==1) {
+			    	if(!enemyFly)
+			    		enemyChangeBase = !enemyChangeBase;
+			    	enemyMove=true;
+			    	enemyAttack=false;
+			    	enemyJump=false;
+			    	holdA=-15;
+			    }else if(move==2){
+			    	if(!enemyFly)
+			    		enemyChangeBase = !enemyChangeBase;
+			    	enemyMove=true;
+			    	enemyAttack=false;
+			    	enemyJump=false;
+			    	holdA=15;
+			    }else if(move==4) {
+		    		enemyMove=false;
+		    		holdA=holdB=0;
+		    		enemyAttack=true;
+		    	}else if(move==3) {
+		    		enemyJump=true;
+			    	
+		    	}else if(move==5) {
+		    		enemyBarage=true;
+		    	}
+		    }
 		    /*
 		    if(fly && enemyKi>80) {
 		    	enemyFly=true;
 		    }*/
+		    if(!fly && reachTop && a-x<400) {
+		    	enemyEscape=true;
+		    }
+		    
 		    handleEnemyFly();
 		    if(enemyFly) {
 		    	if(enemyKi<20) {
@@ -1197,7 +1202,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    		holdA=20;
 	    	}
 	    }
-	    //a+=holdA;
+	    a+=holdA;
 	    b+=holdB;
 	    /*if (x < a && (a > x + 300)) enemyMove = true;
 	    
