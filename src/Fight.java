@@ -115,7 +115,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean chase=false;
 	boolean grounded=false;
 	boolean enemyFly=false,  enemyBarage=false;int enemyBarageCounter=0;
-	double enemyKi=1;
+	int enemyKi=100;
 	int enemySpecAttackCounter=0;
 	
 	String enemyBaseAttacks[] = {"Punch.png", "MidKick.png","HeightKick.png"};
@@ -171,7 +171,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		}
 		
 		if(enemyKi<100 && !enemyFly && !enemyBarage) {
-			enemyKi+=0.5;
+			enemyKi+=1;
 		}
 		
 		try {
@@ -375,7 +375,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				deadCount++;
 			}
 						
-			BufferedImage img=ImageIO.read(new File("background/background.jpeg"));
+			BufferedImage img=ImageIO.read(new File("background/stage1.jpg"));
 			Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
 		    setPreferredSize(size);
 		    setMinimumSize(size);
@@ -647,7 +647,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		    g.drawString(String.valueOf(myKi), 10, 150); 
 		    
 		    g.setColor(Color.BLUE);
-		    g.drawString(String.valueOf(Integer.parseInt((enemyKi+""))), getWidth() - 90, 150); 
+		    g.drawString(String.valueOf(enemyKi), getWidth() - 90, 150); 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -975,6 +975,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	        enemyJumpAttack = true;
 	        if (x >= a - 350 && !block) {
 	            punched = true;
+	            if(faza2)
+	            	specAttack=false;
 	        }
 	    }
 	}
@@ -1007,10 +1009,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    if (enemyBarage || enemySpecX > 0) {
 	        enemySpecX -= 50 * side;
 	    }
-
+	    System.out.println("WAFFEN SS "+b);
 	    if (!fly && b > 770) {
+	    	holdB=30;
 	        enemyFly = false;
-	        b = 790;
+	        if(b>790)
+	        	b = 790;
 	    }
 
 	    if (enemyReceivedSpecAttack) {
@@ -1070,7 +1074,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    }
 
 	    if (!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
-	        b = 790;
+	        if(b>790)
+	        	b = 790;
 	    }
 
 	    if (enemyKi < 50 && b == 790) {
@@ -1113,17 +1118,19 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	   
 	    int move=0;
 	    if(!enemyReceivedSpecAttack && !enemyAttack && !enemyPunched && !enemyJump) {
-	    	move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, Integer.parseInt(enemyKi+""), specAttack);
+	    	move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi, specAttack);
 	    	
 		    //System.out.println((a-x)+"  WAFFEN");
 		    if(move==1) {
-		    	enemyChangeBase = !enemyChangeBase;
+		    	if(!enemyFly)
+		    		enemyChangeBase = !enemyChangeBase;
 		    	enemyMove=true;
 		    	enemyAttack=false;
 		    	enemyJump=false;
 		    	holdA=-15;
 		    }else if(move==2){
-		    	enemyChangeBase = !enemyChangeBase;
+		    	if(!enemyFly)
+		    		enemyChangeBase = !enemyChangeBase;
 		    	enemyMove=true;
 		    	enemyAttack=false;
 		    	enemyJump=false;
@@ -1139,6 +1146,16 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    		enemyBarage=true;
 	    	}
 		    
+		    /*
+		    if(fly && enemyKi>80) {
+		    	enemyFly=true;
+		    }*/
+		    handleEnemyFly();
+		    if(enemyFly) {
+		    	if(enemyKi<20) {
+		    		enemyFly=false;
+		    	}
+		    }
 		    
 		    /*else if(move==3) {
 		    	enemyJump=true;
@@ -1180,7 +1197,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    		holdA=20;
 	    	}
 	    }
-	    a+=holdA;
+	    //a+=holdA;
 	    b+=holdB;
 	    /*if (x < a && (a > x + 300)) enemyMove = true;
 	    
@@ -1194,7 +1211,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	        if ((a >= 800 || a < x + 250) && !enemyAttack) enemyMove = true;
 	    }*/
 
-	    handleEnemyFly();
+	    
 	    //enemySpecialAttacked();
 
 	    if (!enemyJump && !enemyReceivedSpecAttack && !enemyFly) {
@@ -1241,12 +1258,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			// Nasumično simuliramo akcije i njihove ishode
 			switch (move) {
 				case 1:
-				   
-				  if(specialAttack) {
-					  if(specialAttack && a-x<520) {
-						  score=rand.nextInt(70);
-				  	   }
-				  }
 				  if(!specialAttack && a>x+200 && myHelth<50) {
 					  score=rand.nextInt(20)+5;
 				  }else
@@ -1255,8 +1266,12 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					  score=0;
 				  }
 				  if(a-x>600)
-					  score=rand.nextInt(70);
-				  
+					  score=rand.nextInt(70)+3;
+				  if(specialAttack) {
+					  if(specialAttack && a-x<620) {
+						  score=rand.nextInt(100);
+				  	   }
+				  }
 				  break;
 				case 2:
 					score=rand.nextInt(50)+5;
@@ -1292,8 +1307,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					
 				case 3:
 					a-=stepSize;
-					if((a-x)>500) {
-						score=rand.nextInt(50)+4;
+					if(a-x>600) {
+						score=rand.nextInt(70)+1;
+					}else if((a-x)>400) {
+						score=rand.nextInt(50)+5;
 					}
 					if(specialAttack) {
 						if(a-specX<500 && specY>0) {
@@ -1310,7 +1327,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					break;
 				case 4:
 					if(((a-stepSize)-x)<120) {
-						score=rand.nextInt(80);
+						score=rand.nextInt(120);
 					}else if(((a-stepSize)-x)<250)
 						score=rand.nextInt(50)+6;
 					
