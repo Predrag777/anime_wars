@@ -936,6 +936,15 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	            specX = 0;
 	            faza2 = false;
 	        }
+	        
+	        if((f1.getName().equalsIgnoreCase("EdwardElric") || f1.getName().equalsIgnoreCase("Al")) && specX>=a-260) {
+	        	enemyHelth=20;
+	        	enemyJumpAttack = enemyJump = false;
+	            enemyReceivedSpecAttack = true;
+	            specAttack = false;
+	            specX = 0;
+	            faza2 = false;
+	        }
 	        holdX = holdY = 0;
 	    }
 	    if (specX >= 1000) {
@@ -1105,7 +1114,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    if(!enemyReceivedSpecAttack && !enemyAttack && !enemyPunched && !enemyJump) {
 	    	move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi, specAttack);
 	    	
-		    System.out.println((a-x)+"  WAFFEN");
+		    //System.out.println((a-x)+"  WAFFEN");
 		    if(move==1) {
 		    	enemyChangeBase = !enemyChangeBase;
 		    	enemyMove=true;
@@ -1297,8 +1306,9 @@ public double simulateMove(int move, int stepSize, int x, int a, int effectiveDi
 				case 4:
 					if(((a-stepSize)-x)<120) {
 						score=rand.nextInt(80);
-					}else
-						score=rand.nextInt(30)+5;
+					}else if(((a-stepSize)-x)<250)
+						score=rand.nextInt(50)+6;
+					
 					 if(enemyBarage) {
 						  score=0;
 					  }
