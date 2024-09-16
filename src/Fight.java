@@ -10,7 +10,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -65,11 +67,10 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 			enemyNumberAttack=6;
 		}
 		//playSound("ZvucniEfekti/back_sound.wav", 100);
-		System.out.println(level+"    "+enemySpeed+"    "+enemyAttackConstr+"   "+specX);
 	}
 	
 	int myHelth=100;
-	int enemyHelth=12;
+	int enemyHelth=100;
 	int borders=190;
 	int enemyPunchedCounter=0;
 	
@@ -188,49 +189,90 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Jump.png";
 			}
 			
+			
 			if(fly)
 				myKi-=1;
 			
 			if(attack && !jump) {
-				if(attackCount<5) {
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch2.png";
-				}else if(attackCount<10) {
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch.png";
-					if(Math.abs(x-a)<200) {
-						enemyHelth-=5;
-						enemyPunched=true;
-						playSound("ZvucniEfekti/punch.wav",0);
-						attackCount=30;
+				if(f1.getName().equalsIgnoreCase("RoyMustang")) {
+					if(attackCount<1) {
+						playSound("ZvucniEfekti/attack1.wav",0);
 					}
-				}else {
-					attack=false;
-					attackCount=0;
+					else if(attackCount<2) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch1.png";
+					}else if(attackCount<4) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch2.png";
+					}else if(attackCount<6) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch3.png";
+					}else if(attackCount<8) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch4.png";
+					}else if(attackCount<10) {
+						if(Math.abs(x-a)<200) {
+							enemyHelth-=5;
+							enemyPunched=true;
+							//playSound("ZvucniEfekti/punch.wav",0);
+							attackCount=30;
+						}
+					}else {
+						attack=false;
+						attackCount=-1;
+						
+					}
 					
+				}else {
+					if(attackCount<5) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch2.png";
+					}else if(attackCount<10) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punch.png";
+						if(Math.abs(x-a)<200) {
+							enemyHelth-=5;
+							enemyPunched=true;
+							playSound("ZvucniEfekti/punch.wav",0);
+							attackCount=30;
+						}
+					}else {
+						attack=false;
+						attackCount=0;
+						
+					}
 				}
 				attackCount++;
 			}
 			if(midKick && !jump) {
-				if(attackCount<5) {
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick1.png";
-				}else if(attackCount<20) {
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"MidKick.png";
-					if(Math.abs(x-a)<=200) {
-						enemyHelth-=5;
-						enemyPunched=true;
-						playSound("ZvucniEfekti/punch.wav",0);
-						attackCount=30;
+				if(f1.getName().equalsIgnoreCase("RoyMustang")) {
+					if(attackCount<1) {
+						playSound("ZvucniEfekti/attack2.wav",0);
+					}
+					else if(attackCount<2) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick.png";
+					}else if(attackCount<4) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick1.png";
+					}else if(attackCount<6) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick2.png";
 					}
 				}else {
-					midKick=false;
-					attackCount=0;
-					
+					if(attackCount<5) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick1.png";
+					}else if(attackCount<20) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"MidKick.png";
+						if(Math.abs(x-a)<=200) {
+							enemyHelth-=5;
+							enemyPunched=true;
+							playSound("ZvucniEfekti/punch.wav",0);
+							attackCount=30;
+						}
+					}else {
+						midKick=false;
+						attackCount=0;
+						
+					}
 				}
 				attackCount++;
 			}
 			if(heightKick && !jump) {
 				if(attackCount<5) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Kick1.png";
-					System.out.println(ss);
+					
 				}else if(attackCount<20) {
 					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"HeightKick.png";
 					if(Math.abs(x-a)<=200) {
@@ -247,37 +289,67 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				attackCount++;
 			}
 			if(specAttack) {
-				if(count==30) {
-					specX=x;specY=y;
-					target=izracunajRastojanje(specX, specY, a, b);
-					if(fly) {
-						pravacX = (a - specX) / target;
-			            pravacY = (b - specY) / target;
-					}
-					faza2=true;
-				}else {
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack.png";
-				}
-				if(faza2) {
-					count=0;
-					if(!f1.getWho().equalsIgnoreCase("Saiyan"))
+				if(f1.getName().equalsIgnoreCase("RoyMustang")) {
+					if(count<1) {
+						
+					}else if(count<2) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack1.png";
+					}else if(count<3) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack2.png";
+					}else if(count<4) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack3.png";
+					}else if(count<10) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack4.png";
+					}else if(count<20) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack5.png";
+					}else if(count<25) {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack6.png";
+
+					}else if(count<27){
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack7.png";
+
+					}else {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack8.png";
+						count=0;
+						
 						alchemyAttackX=a;
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack2.png";
+						
+					}
+				}else {
+					if(count==30) {
+						specX=x;specY=y;
+						target=izracunajRastojanje(specX, specY, a, b);
+						if(fly) {
+							pravacX = (a - specX) / target;
+				            pravacY = (b - specY) / target;
+						}
+						faza2=true;
+					}else {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack.png";
+					}
+					if(faza2) {
+						count=0;
+						if(!f1.getWho().equalsIgnoreCase("Saiyan"))
+							alchemyAttackX=a;
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"SpecAttack2.png";
+					}
 				}
 				count++;
 			}
 			if(slide) {
 				ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Slide.png";
 			}
+			
 			if(punched) {
 				
-				if(count>10) {
-					punched=false;
-					myHelth-=10;
-					count=0;
-				}else {
-					ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punched.png";
-				}
+					if(count>10) {
+						punched=false;
+						myHelth-=10;
+						count=0;
+					}else {
+						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+ulti_ss+"Punched.png";
+					}
+				
 				count++;
 			}
 			
@@ -290,7 +362,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				if(f1.getWho().equalsIgnoreCase("Saiyan")) {
 					if(count<30) {
 						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm.png";
-						System.out.println(ss);
+						
 						ulti_ss="Ulty";
 						
 					}else {
@@ -300,7 +372,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				}else {
 					if(count<10) {
 						ss=ss.substring(0,ss.indexOf('/')+1)+f1.getName().toLowerCase()+"NewForm.png";
-						System.out.println(ss);
+						
 						ulti_ss="Ulty";
 						
 					}else if(count<20){
@@ -389,7 +461,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 				
 				wave=ImageIO.read(new File(f1.getFile()+"/"+f1.getName().toLowerCase()+"Power.png"));	
 				if(!f1.getWho().equalsIgnoreCase("Saiyan")) {
-					//System.out.println(alchemyAttackX);
 					if(permutCircleCounter<15)
 						g.drawImage(wave,alchemyAttackX-200, 900,   400,100,null);////Projektil
 					else {
@@ -438,7 +509,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 						enemyMidKick=true;
 					}
 				}
-				//System.out.println("------------------------------------------");
 				if(enemyPunch) {
 					if(enemyAttackCount<enemyAttackConstr/2) {//<5
 						waff=waff.substring(0,waff.indexOf('/')+1)+f2.getName().toLowerCase()+"Punch2.png";
@@ -727,7 +797,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 		// TODO Auto-generated method stub
 		int code=e.getKeyCode();
 		if(code==KeyEvent.VK_UP && !double_back) {
-			//System.out.println(flyCounter);
 			flyCounter++;
 			if(jump && flyCounter==2 && myKi>30) {
 				fly=true;
@@ -829,8 +898,31 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    handleSlide();
 	    handleGrounding();
 	    handleSpecialAttack();
-	    System.out.println(x+"   "+a+"    "+(a-x));
+	    
 	    handleEnemyAI();
+	    
+	    
+	    String filePath = "waffen.txt"; // putanja do tvog CSV fajla
+	    String currMove="";
+        String newLine = x+", "+y+", "+a+" "+b+" "+myKi+" "+myHelth+" "+fly;
+        
+        if(jump)
+        	currMove="jump";
+        if(attack)
+        	currMove="attack";
+        if(specAttack)
+        	currMove="specAttack";
+        
+        
+        try (FileWriter fw = new FileWriter(filePath, true);
+             PrintWriter pw = new PrintWriter(fw)) {
+
+            pw.println(newLine); 
+            System.out.println(newLine);
+
+        } catch (IOException e) {
+            System.err.println("Greška prilikom pisanja u fajl: " + e.getMessage());
+        }
 	}
 
 	private void handleBoundaryCollision() {
@@ -929,7 +1021,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	        specX += holdSpec * side;
 	        specY += holdSpecY * pravacY;
 	        if (specX >= a - 260 && b-specY>20) {
-	        	//System.out.println(b+"    "+specY);
 	            enemyHelth -= 40;
 	            enemyJumpAttack = enemyJump = false;
 	            enemyReceivedSpecAttack = true;
@@ -1009,7 +1100,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    if (enemyBarage || enemySpecX > 0) {
 	        enemySpecX -= 50 * side;
 	    }
-	    System.out.println("WAFFEN SS "+b);
 	    if (!fly && b > 770) {
 	    	holdB=30;
 	        enemyFly = false;
@@ -1120,7 +1210,6 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    if(!enemyReceivedSpecAttack && !enemyAttack && !enemyPunched && !enemyJump) {
 	    	move=MonteKarlo(15, x, a, enemySpeed, 5, 5, myHelth, enemyHelth, 40, 100, 20, enemyKi, specAttack);
 	    	
-		    //System.out.println((a-x)+"  WAFFEN");
 		    if(!enemyEscape) {
 		    	if(move==1) {
 			    	if(!enemyFly)
@@ -1341,7 +1430,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 					  }
 					break;
 				case 5:
-					if(a-x>400 && ki>50 && enemyKi>50 && myHelth<50) {
+					if(a-x>400 && ki>50 && enemyKi>50 && myHelth<30) {
 						score=rand.nextInt(100);
 					}
 			  
