@@ -25,6 +25,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 class Crtaj extends JPanel implements KeyListener, ActionListener{
 
 	Timer t=new Timer(100,this);
@@ -35,6 +41,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	int speed=0;double pravacX=1, pravacY=1, dirX=1, dirY=1;
 	
 	int alchemyAttackX=0;
+	
+	boolean myLeft=false,myRight=false;
 	
 	int permutCircleCounter=0;
 	
@@ -144,7 +152,7 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	boolean double_back_gate=false;
 	int double_back_counter=0;
 	int teleport_counter=0;
-	float myKi=1000000.0f;
+	float myKi=100.0f;
 		
 		
 	boolean faza1=false;
@@ -740,6 +748,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	public void right() {
 		if(!jump) {
+			myLeft=false;
+			myRight=true;
 			holdX=15;
 			holdY=0;
 			move=true;
@@ -749,6 +759,8 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	
 	public void left() {
 		if(!jump) {
+			myLeft=true;
+			myRight=false;
 			holdX=-15;
 			holdY=0;
 			move=false;
@@ -885,7 +897,53 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	        e.printStackTrace();
 	    }
 	}
+	public void handleEnemyAI2() {
+		try {
+            // Kreiranje URL-a sa 7 integer argumenata
+			String arguments="arg1="+x+"&arg2="+y+"&arg3="+a+"&arg4="+b+"&arg5="+enemyKi+"&arg6="+enemyHelth;
+            String url = "http://localhost:5000/api/receive?"+arguments;
+            
+            // Otvaranje konekcije
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("GET");
+            
+            // Čitanje odgovora sa servera
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
 
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            
+            String nextMove=response.toString().split(":")[1].replace("}", "");
+            
+            switch(nextMove) {
+            case "right":
+            	holdA=-15;
+            	break;
+            case "left":
+            	holdA=15;
+            	break;
+            case "jump":
+            	System.out.println("JUMP");
+            	break;
+            case "attack":
+            	holdA=holdB=0;
+            	enemyAttack=true;
+            	break;
+            case "specAttack":
+            	holdA=holdB=0;
+            	System.out.println("SPECIJALKA");
+            }
+                       
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
 	
 	
 	@Override
@@ -899,26 +957,31 @@ class Crtaj extends JPanel implements KeyListener, ActionListener{
 	    handleGrounding();
 	    handleSpecialAttack();
 	    
-	    handleEnemyAI();
-	    
+	    //handleEnemyAI();
+	    handleEnemyAI2();
 	    
 	    String filePath = "waffen.txt"; // putanja do tvog CSV fajla
-	    String currMove="";
-        String newLine = x+", "+y+", "+a+" "+b+" "+myKi+" "+myHelth+" "+fly;
+	    String currMove="right";
+        String newLine = x+", "+y+", "+a+", "+b+", "+myKi+", "+myHelth+", "+fly;
         
         if(jump)
         	currMove="jump";
-        if(attack)
+        if(attack || midKick || heightKick)
         	currMove="attack";
-        if(specAttack)
+        if(specAttack && count<3)
         	currMove="specAttack";
+        if(myLeft && (!attack && !midKick && !heightKick) && !specAttack && !jump)
+        	currMove="left";
+        if(myRight && (!attack && !midKick && !heightKick) && !specAttack && !jump)
+        	currMove="right";
         
         
+        newLine+=", "+currMove;
         try (FileWriter fw = new FileWriter(filePath, true);
              PrintWriter pw = new PrintWriter(fw)) {
 
             pw.println(newLine); 
-            System.out.println(newLine);
+            //System.out.println(newLine);
 
         } catch (IOException e) {
             System.err.println("Greška prilikom pisanja u fajl: " + e.getMessage());
